@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 66" role="img" aria-label="Arborea">
+  <!-- Marca Arborea: árbol cuya copa mezcla cartografía urbana (retícula) y
+       topográfica (curvas de nivel). Concepto: arbolado + base técnica GIS. -->
+  <defs>
+    <linearGradient id="ar-c" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#14532d"/><stop offset="1" stop-color="#2f7a34"/>
+    </linearGradient>
+    <linearGradient id="ar-l" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#166534"/><stop offset="1" stop-color="#4d7c0f"/>
+    </linearGradient>
+    <linearGradient id="ar-r" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#3f6212"/><stop offset="1" stop-color="#84cc16"/>
+    </linearGradient>
+    <linearGradient id="ar-t" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14532d"/><stop offset="1" stop-color="#166534"/>
+    </linearGradient>
+    <!-- Silueta de hoja en coordenadas locales (punta arriba, base en 32,41) -->
+    <clipPath id="ar-leaf">
+      <path d="M32 3 C44 11 48 25 41 35 C38 40 35 41 32 41 C29 41 26 40 23 35 C16 25 20 11 32 3 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Hoja izquierda: retícula urbana (parcelario/callejero) -->
+  <g transform="rotate(-45 32 41)">
+    <path fill="url(#ar-l)" d="M32 3 C44 11 48 25 41 35 C38 40 35 41 32 41 C29 41 26 40 23 35 C16 25 20 11 32 3 Z"/>
+    <g clip-path="url(#ar-leaf)" stroke="#fff" stroke-opacity=".55" stroke-width="1.2">
+      <path d="M23 12H45 M20 20H46 M19 28H45 M22 36H42"/>
+      <path d="M26 6V41 M32 4V41 M38 6V41 M44 20V38"/>
+    </g>
+  </g>
+
+  <!-- Hoja derecha: curvas de nivel (topografía) -->
+  <g transform="rotate(45 32 41)">
+    <path fill="url(#ar-r)" d="M32 3 C44 11 48 25 41 35 C38 40 35 41 32 41 C29 41 26 40 23 35 C16 25 20 11 32 3 Z"/>
+    <g clip-path="url(#ar-leaf)" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.2">
+      <ellipse cx="32" cy="24" rx="4.5" ry="6"/>
+      <ellipse cx="32" cy="24" rx="9" ry="11"/>
+      <ellipse cx="32" cy="24" rx="13.5" ry="16"/>
+      <ellipse cx="32" cy="24" rx="18" ry="21"/>
+    </g>
+  </g>
+
+  <!-- Hoja central: nervadura limpia, al frente -->
+  <g>
+    <path fill="url(#ar-c)" d="M32 3 C44 11 48 25 41 35 C38 40 35 41 32 41 C29 41 26 40 23 35 C16 25 20 11 32 3 Z"/>
+    <g clip-path="url(#ar-leaf)" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.5" stroke-linecap="round">
+      <path d="M32 8V40"/>
+      <path d="M32 16C29 17 27 19 25.5 22 M32 16C35 17 37 19 38.5 22"/>
+      <path d="M32 25C29 26 27 28 25.5 31 M32 25C35 26 37 28 38.5 31"/>
+    </g>
+  </g>
+
+  <!-- Tronco -->
+  <path fill="url(#ar-t)" d="M29.6 40 C29.6 46 27.8 50.5 24 54.5 L29 54.5 C31 51.8 31.6 49 32 47 C32.4 49 33 51.8 35 54.5 L40 54.5 C36.2 50.5 34.4 46 34.4 40 Z"/>
+  <!-- Raíces como curvas de nivel -->
+  <g fill="none" stroke="#166534" stroke-linecap="round">
+    <path d="M13 56.5 C22 52 42 52 51 56.5" stroke-width="2.4"/>
+    <path d="M20 60.5 C27 57.5 37 57.5 44 60.5" stroke-width="2"/>
+  </g>
+</svg>

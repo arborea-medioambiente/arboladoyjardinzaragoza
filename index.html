@@ -5,14 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Arborea Jardinería — Mantenimiento y diseño de jardines en Zaragoza</title>
 <meta name="description" content="Mantenimiento de jardines y diseño paisajístico para chalets en Zaragoza y alrededores. Trato cercano, servicio de confianza.">
+<meta name="theme-color" content="#14532d">
+<link rel="icon" href="img/marca-favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="logo" href="#inicio">Arborea <span>Jardinería</span></a>
-    <nav class="nav">
+    <a class="logo" href="#inicio">arborea<span> jardinería</span></a>
+    <nav class="nav" id="nav">
       <a href="#servicios">Servicios</a>
       <a href="#expres">Exprés</a>
       <a href="#galeria">Galería</a>
@@ -20,7 +25,12 @@
       <a href="#zona">Zona</a>
       <a href="#contacto">Contacto</a>
     </nav>
-    <a class="btn btn-primary btn-header" href="https://wa.me/34676000000" target="_blank" rel="noopener">WhatsApp</a>
+    <div class="header-actions">
+      <a class="btn btn-primary btn-header" href="https://wa.me/34676000000" target="_blank" rel="noopener">WhatsApp</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-controls="nav" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -36,7 +46,7 @@
           <a class="btn btn-ghost" href="tel:+34676000000">Llamar: 676 000 000</a>
         </div>
       </div>
-      <img class="hero-image" src="img/jardin-fachada.jpg" alt="Jardín moderno de chalet con césped cuidado y árboles">
+      <img class="hero-image" src="img/jardin-chalet.png" alt="Jardín de chalet en Zaragoza con césped cuidado, macizos de flores y camino de piedra">
     </div>
   </section>
 
@@ -95,12 +105,13 @@
   <section id="galeria" class="section">
     <div class="container">
       <h2>Jardines que cuidamos</h2>
-      <p class="section-sub">Algunos ejemplos del estilo de jardín moderno que trabajamos en chalets como el suyo.</p>
+      <p class="section-sub">Nuestro equipo trabajando en jardines de chalets como el suyo, con equipo profesional.</p>
 
       <div class="gallery">
-        <img src="img/jardin-patio.jpg" alt="Patio y jardín de chalet moderno con zona de estar exterior">
-        <img src="img/jardin-camino.jpg" alt="Camino de madera entre césped y plantas en jardín trasero">
-        <img src="img/jardin-seto.jpg" alt="Camino ajardinado con setos recortados en jardín de chalet">
+        <img src="img/siega-cesped.png" alt="Jardinero de Arborea segando el césped de un chalet con cortacésped">
+        <img src="img/poda-arbol.png" alt="Jardinero de Arborea podando las ramas de un árbol con pértiga de poda">
+        <img src="img/riego-goteo.png" alt="Jardinero de Arborea instalando riego por goteo en un macizo de plantas">
+        <img src="img/desbroce.png" alt="Jardinero de Arborea desbrozando maleza en una parcela con desbrozadora">
       </div>
     </div>
   </section>
@@ -149,10 +160,38 @@
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <p>Arborea Jardinería — Zaragoza y alrededores</p>
-    <p>676 000 000 · info@arboreajardineria.es</p>
+    <p class="footer-firma">
+      <a href="https://arboreaconsultores.es" target="_blank" rel="noopener">arborea</a><span> jardinería</span>
+      <span class="footer-sep">·</span>Mantenimiento y diseño de jardines en Zaragoza
+    </p>
+    <p class="footer-contacto">676 000 000 · info@arboreajardineria.es</p>
   </div>
 </footer>
+
+<script>
+  (function () {
+    var toggle = document.getElementById('nav-toggle');
+    var nav = document.getElementById('nav');
+    if (!toggle || !nav) return;
+
+    function closeNav() {
+      nav.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', function () {
+      var abierto = nav.classList.toggle('open');
+      toggle.classList.toggle('open', abierto);
+      toggle.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+    });
+
+    // Cerrar el menú al pulsar un enlace de sección
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', closeNav);
+    });
+  })();
+</script>
 
 </body>
 </html>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 66" role="img" aria-label="Arborea">
+  <!-- Versión simplificada para tamaños pequeños (favicon): copa de 3 hojas
+       lisas + tronco, sin texturas cartográficas. -->
+  <defs>
+    <linearGradient id="fav-c" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#14532d"/><stop offset="1" stop-color="#3f8f43"/>
+    </linearGradient>
+    <linearGradient id="fav-l" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#166534"/><stop offset="1" stop-color="#4d7c0f"/>
+    </linearGradient>
+    <linearGradient id="fav-r" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#3f6212"/><stop offset="1" stop-color="#84cc16"/>
+    </linearGradient>
+  </defs>
+  <g transform="rotate(-45 32 41)"><path fill="url(#fav-l)" d="M32 3 C44 11 48 25 41 35 C38 40 35 41 32 41 C29 41 26 40 23 35 C16 25 20 11 32 3 Z"/></g>
+  <g transform="rotate(45 32 41)"><path fill="url(#fav-r)" d="M32 3 C44 11 48 25 41 35 C38 40 35 41 32 41 C29 41 26 40 23 35 C16 25 20 11 32 3 Z"/></g>
+  <path fill="url(#fav-c)" d="M32 3 C44 11 48 25 41 35 C38 40 35 41 32 41 C29 41 26 40 23 35 C16 25 20 11 32 3 Z"/>
+  <path fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.8" stroke-linecap="round" d="M32 9V39"/>
+  <path fill="url(#fav-c)" d="M29.6 40 C29.6 46 27.8 50.5 24 54.5 L29 54.5 C31 51.8 31.6 49 32 47 C32.4 49 33 51.8 35 54.5 L40 54.5 C36.2 50.5 34.4 46 34.4 40 Z"/>
+  <path d="M15 57 C23 53 41 53 49 57" fill="none" stroke="#166534" stroke-width="2.6" stroke-linecap="round"/>
+</svg>
