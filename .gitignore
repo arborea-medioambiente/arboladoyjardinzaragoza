@@ -1,0 +1,5 @@
+# Archivos de trabajo locales — no forman parte de la web publicada
+generate_image.py
+
+# Imágenes de trabajo generadas (se guardan versiones limpias con nombre propio)
+img/ChatGPT Image*
