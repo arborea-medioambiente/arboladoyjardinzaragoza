@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="verdalia">
-  <g fill="none" stroke="#2f6b45" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"
-     transform="rotate(-32 32 32)">
-    <path d="M32 6 C48 16 50 40 32 57 C14 40 16 16 32 6 Z"/>
-    <path d="M32 14 C30 29 30.5 46 33.5 57 C34 60.5 32 62.5 28.5 62"/>
-  </g>
-</svg>
