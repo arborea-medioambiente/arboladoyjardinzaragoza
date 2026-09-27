@@ -396,3 +396,7 @@ p { margin: 0 0 1em; color: var(--texto-suave); }
 @media (max-width: 560px) {
   .cards { grid-template-columns: 1fr; }
 }
+
+/* Enlaces al formulario de contacto (correo) */
+.contacto-direccion a, .footer-contacto a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.contacto-direccion a:hover, .footer-contacto a:hover { color: #fff; }
