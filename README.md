@@ -1,14 +1,23 @@
-# Jardinería — negocio
+# arboladoyjardinzaragoza.es
 
-Repositorio de trabajo para el nuevo negocio de servicios de jardinería.
+Web de Arbolado y Jardín Zaragoza (jardinería, poda, tala, destoconado y desbroce).
+Se publica con GitHub Pages desde la rama `main` (dominio en `CNAME`).
 
-## Enfoque inicial
+## Qué hay
 
-- Público objetivo: personas de 45 a 70 años con chalet.
-- Servicio principal: por definir (mantenimiento recurrente vs. proyectos puntuales).
-- Zona de operación: por definir.
+| Ruta | Qué es |
+|---|---|
+| `index.html` | Portada |
+| `servicios/` | Una página por servicio |
+| `aviso-legal.html`, `privacidad.html`, `cookies.html` | Páginas legales |
+| `js/cookies.js` | Aviso de cookies: Google Analytics solo se carga si se acepta; el mapa solo al pulsar |
+| `img/fotos/` | Fotos reales en WebP (máx. 1200 px, sin datos GPS) |
+| `herramientas/generar_paginas.py` | Genera todas las páginas con la misma cabecera y pie |
 
-## Contenido
+## Cambiar textos
 
-Por ahora vacío. Se irá añadiendo aquí lo que corresponda: plan de negocio, precios,
-materiales de captación, web, herramientas de presupuesto, etc.
+Los textos están en `herramientas/generar_paginas.py`. Después de cambiarlo:
+
+    python herramientas/generar_paginas.py .
+
+Vista previa: `python -m http.server 8199` y abrir http://localhost:8199

@@ -1,50 +1,33 @@
 <!doctype html>
 <html lang="es">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-3S94ZZ80TG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-3S94ZZ80TG');
-  // Clics en llamar, WhatsApp o formulario, con su motivo (para clasificar los contactos)
-  document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a[href]');
-    if (!a) return;
-    var h = a.getAttribute('href'), m = null;
-    if (/^tel:/i.test(h)) m = 'telefono';
-    else if (/wa\.me\//i.test(h)) m = 'whatsapp';
-    else if (/contacto\.html/i.test(h)) m = 'formulario';
-    if (m) gtag('event', 'contact_click', { method: m, motivo: 'jardineria' });
-  });
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jardinería, arbolado y prevención de incendios en Zaragoza | verdalia</title>
-<meta name="description" content="Gestión integral de jardines, arbolado y fincas rústicas en Zaragoza: poda, tala, desbroce y prevención de incendios. Nos ocupamos de todo, desde las autorizaciones hasta la retirada de los restos.">
-<meta name="keywords" content="jardinería Zaragoza, poda de árboles Zaragoza, tala controlada, desbroce fincas rústicas, prevención de incendios, arboricultura, mantenimiento de jardines">
+<title>Jardinería, poda y tala en Zaragoza | Arbolado y Jardín Zaragoza</title>
+<meta name="description" content="Mantenimiento de jardines, poda, tala, destoconado y desbroce de fincas en Zaragoza y alrededores. Nos ocupamos de todo, desde los permisos hasta la retirada de los restos.">
 <link rel="canonical" href="https://arboladoyjardinzaragoza.es/">
 <meta name="theme-color" content="#14532d">
 <link rel="icon" href="img/verdalia-favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_ES">
-<meta property="og:site_name" content="verdalia servicios">
-<meta property="og:title" content="Jardinería, arbolado y prevención de incendios en Zaragoza | verdalia">
-<meta property="og:description" content="Gestión integral de jardines, arbolado y fincas rústicas en Zaragoza. Desde las autorizaciones hasta la retirada de los restos.">
+<meta property="og:site_name" content="Arbolado y Jardín Zaragoza">
+<meta property="og:title" content="Jardinería, poda y tala en Zaragoza | Arbolado y Jardín Zaragoza">
+<meta property="og:description" content="Mantenimiento de jardines, poda, tala, destoconado y desbroce de fincas en Zaragoza y alrededores. Nos ocupamos de todo, desde los permisos hasta la retirada de los restos.">
 <meta property="og:url" content="https://arboladoyjardinzaragoza.es/">
+<meta property="og:image" content="https://arboladoyjardinzaragoza.es/img/fotos/tala-pino-junto-a-viviendas.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<script src="js/cookies.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "verdalia servicios",
-  "description": "Gestión integral de jardines, arbolado y fincas rústicas en Zaragoza: poda, tala, desbroce y prevención de incendios, desde las autorizaciones hasta la retirada de los restos.",
+  "name": "Arbolado y Jardín Zaragoza",
+  "description": "Jardinería, poda, tala, destoconado y desbroce de fincas en Zaragoza y alrededores, desde las autorizaciones hasta la retirada de los restos.",
   "url": "https://arboladoyjardinzaragoza.es/",
+  "image": "https://arboladoyjardinzaragoza.es/img/fotos/tala-pino-junto-a-viviendas.webp",
   "telephone": "+34624757421",
   "email": "info@verdaliama.es",
   "areaServed": "Zaragoza y alrededores",
@@ -55,14 +38,7 @@
     "addressLocality": "Zaragoza",
     "addressCountry": "ES"
   },
-  "knowsAbout": [
-    "Jardinería",
-    "Arboricultura",
-    "Poda en altura",
-    "Tala controlada",
-    "Desbroce de fincas rústicas",
-    "Prevención de incendios"
-  ]
+  "knowsAbout": ["Jardinería", "Arboricultura", "Poda de árboles", "Tala controlada", "Destoconado", "Desbroce de fincas rústicas", "Prevención de incendios"]
 }
 </script>
 </head>
@@ -70,14 +46,13 @@
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="logo" href="#inicio" aria-label="verdalia servicios — inicio">
+    <a class="logo" href="" aria-label="Arbolado y Jardín Zaragoza, inicio">
       <img class="logo-mark" src="img/verdalia-hoja.svg" alt="" aria-hidden="true">
-      <span class="logo-text">verdalia<span> servicios</span></span>
+      <span class="logo-text">Arbolado y Jardín<span> Zaragoza</span></span>
     </a>
     <nav class="nav" id="nav">
       <a href="#servicios">Servicios</a>
-      <a href="#expres">Exprés y urgencias</a>
-      <a href="#nosotros">Por qué nosotros</a>
+      <a href="#expres">Urgencias</a>
       <a href="#zona">Zona</a>
       <a href="#contacto">Contacto</a>
     </nav>
@@ -95,63 +70,61 @@
   <section id="inicio" class="hero">
     <div class="container hero-inner">
       <div class="hero-text">
-        <h1>Su jardín, su arbolado y su finca, en buenas manos</h1>
-        <p class="hero-sub">Jardinería, arboricultura y prevención de incendios en Zaragoza y alrededores. Para chalets y fincas rústicas, nos ocupamos de todo: desde la solicitud de autorizaciones hasta la retirada de los restos.</p>
+        <h1>Su jardín, sus árboles y su finca, en buenas manos</h1>
+        <p class="hero-sub">Jardinería, poda, tala y desbroce en Zaragoza y alrededores, para chalets, comunidades y fincas rústicas. Nos ocupamos de todo: desde pedir los permisos hasta llevarnos los restos.</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="https://wa.me/34624757421?text=%5BJARDINERIA%5D%20Hola%2C%20vengo%20de%20arboladoyjardinzaragoza.es.%20Os%20cuento%20qu%C3%A9%20necesito%20y%20d%C3%B3nde%3A%20" target="_blank" rel="noopener">Pedir presupuesto por WhatsApp</a>
           <a class="btn btn-ghost" href="tel:+34624757421">Llamar: 624 75 74 21</a>
         </div>
       </div>
-      <img class="hero-image" src="img/jardin-chalet.png" alt="Jardín de chalet en Zaragoza con césped cuidado, macizos de flores y camino de piedra">
+      <img class="hero-image" src="img/fotos/tala-pino-junto-a-viviendas.webp" alt="Pino grande e inclinado junto a una calle con viviendas y coches aparcados" width="900" height="1200">
     </div>
   </section>
 
   <section class="highlight">
     <div class="container highlight-inner">
       <img class="highlight-icon" src="img/verdalia-hoja.svg" alt="" aria-hidden="true">
-      <p><strong>Gestión completa: usted se despreocupa.</strong> Nos encargamos de todo el proceso —desde la solicitud de autorizaciones y licencias hasta la retirada de los restos, cuando es necesario— para que no tenga que hablar con nadie más.</p>
+      <p><strong>Usted se despreocupa.</strong> Si el trabajo necesita permiso del ayuntamiento o de Medio Ambiente, lo tramitamos nosotros, y al terminar dejamos la zona limpia.</p>
     </div>
   </section>
 
   <section id="servicios" class="section">
     <div class="container">
       <h2>Servicios</h2>
-      <p class="section-sub">Jardín, arbolado y fincas rústicas, de forma periódica o puntual.</p>
-
-      <div class="services-group">
-        <h3 class="group-title">Jardín</h3>
-        <div class="cards">
-          <article class="card">
-            <h4>Mantenimiento periódico</h4>
-            <p>Siega, poda, riego y limpieza con visitas programadas. Usted no tiene que preocuparse de nada.</p>
-          </article>
-          <article class="card">
-            <h4>Riego automático</h4>
-            <p>Instalación y mantenimiento de sistemas de riego para que su jardín esté siempre a punto.</p>
-          </article>
-          <article class="card">
-            <h4>Diseño y reforma de jardín</h4>
-            <p>Plantación, césped nuevo o rediseño de zonas del jardín, adaptados a su chalet.</p>
-          </article>
-        </div>
-      </div>
-
-      <div class="services-group">
-        <h3 class="group-title">Arbolado y fincas</h3>
-        <div class="cards">
-          <article class="card">
-            <h4>Poda y arboricultura</h4>
-            <p>Poda de formación, sanitaria y en altura con técnica de escalada, para el cuidado integral de su arbolado.</p>
-          </article>
-          <article class="card">
-            <h4>Talas controladas</h4>
-            <p>Apeo dirigido de árboles junto a viviendas, muros o tendidos, con todas las garantías de seguridad.</p>
-          </article>
-          <article class="card">
-            <h4>Desbroce y prevención de incendios</h4>
-            <p>Desbroce de fincas rústicas y parcelas para reducir el riesgo de incendio y mantener el terreno limpio y en regla.</p>
-          </article>
-        </div>
+      <p class="section-sub">De forma periódica o para un trabajo puntual.</p>
+      <div class="cards cards-4">
+          <a class="card card-link" href="servicios/mantenimiento-de-jardines.html">
+            <div class="card-icono" aria-hidden="true"><svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 40h36"/><path d="M14 40c0-7 2-12 6-16"/><path d="M20 24c-6 1-10-2-11-8 6-1 10 2 11 8z"/><path d="M20 24c2-7 7-10 14-10-1 7-6 11-14 10z"/><path d="M30 40v-6"/><path d="M27 34h6"/><path d="M36 40c0-4 1-7 4-9"/></svg></div>
+            <div class="card-body">
+              <h3>Mantenimiento de jardines</h3>
+              <p>Siega, setos, riego y limpieza con visitas programadas. También plantación y reforma de zonas del jardín.</p>
+              <span class="card-mas">Ver el servicio →</span>
+            </div>
+          </a>
+          <a class="card card-link" href="servicios/poda-de-arboles.html">
+            <img class="card-img" src="img/fotos/arbol-exudado.webp" alt="" loading="lazy">
+            <div class="card-body">
+              <h3>Poda y arboricultura</h3>
+              <p>Poda de formación, de limpieza y en altura. Revisamos si el árbol tiene grietas, pudriciones o ramas con riesgo.</p>
+              <span class="card-mas">Ver el servicio →</span>
+            </div>
+          </a>
+          <a class="card card-link" href="servicios/tala-y-destoconado.html">
+            <img class="card-img" src="img/fotos/destoconado-jardin.webp" alt="" loading="lazy">
+            <div class="card-body">
+              <h3>Tala y destoconado</h3>
+              <p>Tala controlada de árboles junto a casas, muros o cables, y retirada del tocón para recuperar el espacio.</p>
+              <span class="card-mas">Ver el servicio →</span>
+            </div>
+          </a>
+          <a class="card card-link" href="servicios/desbroce-y-prevencion-de-incendios.html">
+            <img class="card-img" src="img/fotos/desbroce-pinar.webp" alt="" loading="lazy">
+            <div class="card-body">
+              <h3>Desbroce y prevención de incendios</h3>
+              <p>Desbroce de parcelas y fincas para cumplir la normativa y reducir el riesgo de incendio.</p>
+              <span class="card-mas">Ver el servicio →</span>
+            </div>
+          </a>
       </div>
     </div>
   </section>
@@ -161,14 +134,14 @@
       <div class="panel">
         <div class="panel-intro">
           <span class="panel-badge">Respuesta rápida</span>
-          <h2>Trabajos exprés y urgencias</h2>
-          <p>Cuando surge un imprevisto y no puede esperar, intervenimos con rapidez. Avísenos y priorizamos su caso el mismo día siempre que es posible.</p>
+          <h2>Urgencias y trabajos exprés</h2>
+          <p>Cuando algo no puede esperar, avísenos. Si es posible, vamos el mismo día.</p>
         </div>
         <ul class="lista-check">
-          <li>Retirada urgente de árboles o ramas con riesgo de caída tras un temporal.</li>
-          <li>Limpieza y recogida rápida de restos vegetales.</li>
+          <li>Árboles o ramas que pueden caer tras un temporal.</li>
+          <li>Recogida rápida de restos de poda o de ramas caídas.</li>
           <li>Poda o tala que no puede esperar por seguridad.</li>
-          <li>Puesta a punto exprés del jardín antes de una fecha señalada.</li>
+          <li>Puesta a punto del jardín antes de una fecha señalada.</li>
         </ul>
       </div>
     </div>
@@ -176,19 +149,19 @@
 
   <section id="nosotros" class="section">
     <div class="container">
-      <h2>Por qué elegirnos</h2>
+      <h2>Cómo trabajamos</h2>
       <div class="features">
         <div class="feature">
-          <h3>Trato cercano</h3>
-          <p>Un mismo interlocutor de principio a fin, sin call centers ni intermediarios.</p>
+          <h3>Una sola persona de contacto</h3>
+          <p>Habla siempre con la misma persona, del presupuesto al final del trabajo.</p>
         </div>
         <div class="feature">
           <h3>Trabajo seguro</h3>
-          <p>Poda en altura y talas con técnica y equipo de seguridad, protegiendo su casa y su arbolado.</p>
+          <p>Poda en altura y talas con técnica y equipo de seguridad, protegiendo su casa y sus árboles.</p>
         </div>
         <div class="feature">
           <h3>Presupuesto claro</h3>
-          <p>Sin sorpresas: le explicamos qué se hace y cuánto cuesta antes de empezar.</p>
+          <p>Antes de empezar le decimos qué vamos a hacer y cuánto cuesta. Sin sorpresas.</p>
         </div>
       </div>
     </div>
@@ -196,17 +169,10 @@
 
   <section id="zona" class="section section-alt">
     <div class="container zona-inner">
-      <div>
-        <h2>Zona de servicio</h2>
-        <p>Trabajamos en Zaragoza capital y en las urbanizaciones y chalets de los alrededores. Si no está seguro de si llegamos a su zona, pregúntenos sin compromiso.</p>
-      </div>
-      <div class="mapa-embed">
-        <iframe
-          src="https://maps.google.com/maps?q=Calle%20Riglos%209%2C%2050012%20Zaragoza&z=12&output=embed"
-          title="Zona de servicio de verdalia servicios en Zaragoza"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
+      <h2>Zona de servicio</h2>
+      <p>Zaragoza capital y las urbanizaciones y pueblos de alrededor. Si no sabe si llegamos a su zona, pregúntenos sin compromiso.</p>
+      <div class="mapa-embed" data-mapa="https://maps.google.com/maps?q=Calle%20Riglos%209%2C%2050012%20Zaragoza&amp;z=11&amp;output=embed">
+        <button type="button" class="mapa-cargar">Ver el mapa (Google Maps)</button>
       </div>
     </div>
   </section>
@@ -214,12 +180,12 @@
   <section id="contacto" class="section section-cta">
     <div class="container contacto-inner">
       <h2>Hablemos de su jardín</h2>
-      <p>Cuéntenos qué necesita y le preparamos un presupuesto sin compromiso.</p>
+      <p>Cuéntenos qué necesita y dónde, y le preparamos un presupuesto sin compromiso. Si nos manda una foto, mejor.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="https://wa.me/34624757421?text=%5BJARDINERIA%5D%20Hola%2C%20vengo%20de%20arboladoyjardinzaragoza.es.%20Os%20cuento%20qu%C3%A9%20necesito%20y%20d%C3%B3nde%3A%20" target="_blank" rel="noopener">Escribir por WhatsApp</a>
-        <a class="btn btn-ghost" href="tel:+34624757421">624 75 74 21</a>
+        <a class="btn btn-ghost" href="tel:+34624757421">Llamar: 624 75 74 21</a>
+        <a class="btn btn-ghost" href="mailto:info@verdaliama.es?subject=Presupuesto%20de%20jardiner%C3%ADa&body=Hola%2C%20os%20escribo%20desde%20arboladoyjardinzaragoza.es.%0A%0AQu%C3%A9%20necesito%3A%20%0AD%C3%B3nde%20(municipio%20o%20urbanizaci%C3%B3n)%3A%20%0ATel%C3%A9fono%3A%20">Escribir un correo</a>
       </div>
-      <p class="contacto-direccion">O, si lo prefiere, escríbanos desde el <a href="https://factorambiental.es/contacto.html?servicio=jardineria&amp;desde=arboladoyjardinzaragoza.es" target="_blank" rel="noopener">formulario de contacto</a>; le respondemos por correo.</p>
       <p class="contacto-direccion">Calle Riglos 9, 50012 Zaragoza (España)</p>
     </div>
   </section>
@@ -229,10 +195,14 @@
 <footer class="site-footer">
   <div class="container footer-inner">
     <p class="footer-firma">
-      <span class="logo-text">verdalia<span> servicios</span></span>
-      <span class="footer-sep">·</span>Jardinería, arbolado y prevención de incendios en Zaragoza
+      <span class="logo-text">Arbolado y Jardín<span> Zaragoza</span></span>
+      <span class="footer-sep">·</span>Jardinería, arbolado y prevención de incendios
     </p>
-    <p class="footer-contacto">624 75 74 21 · <a href="https://factorambiental.es/contacto.html?servicio=jardineria&amp;desde=arboladoyjardinzaragoza.es" target="_blank" rel="noopener">info@verdaliama.es</a> · Calle Riglos 9, 50012 Zaragoza</p>
+    <p class="footer-contacto"><a href="tel:+34624757421">624 75 74 21</a> · <a href="mailto:info@verdaliama.es">info@verdaliama.es</a> · Calle Riglos 9, 50012 Zaragoza</p>
+  </div>
+  <div class="container footer-inner footer-links">
+    <p><a href="servicios/mantenimiento-de-jardines.html">Mantenimiento de jardines</a> · <a href="servicios/poda-de-arboles.html">Poda y arboricultura</a> · <a href="servicios/tala-y-destoconado.html">Tala y destoconado</a> · <a href="servicios/desbroce-y-prevencion-de-incendios.html">Desbroce y prevención de incendios</a></p>
+    <p><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a> · <a href="#" data-cookies-config>Configurar cookies</a></p>
   </div>
 </footer>
 
@@ -241,23 +211,17 @@
     var toggle = document.getElementById('nav-toggle');
     var nav = document.getElementById('nav');
     if (!toggle || !nav) return;
-
     function closeNav() {
       nav.classList.remove('open');
       toggle.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
     }
-
     toggle.addEventListener('click', function () {
       var abierto = nav.classList.toggle('open');
       toggle.classList.toggle('open', abierto);
       toggle.setAttribute('aria-expanded', abierto ? 'true' : 'false');
     });
-
-    // Cerrar el menú al pulsar un enlace de sección
-    nav.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', closeNav);
-    });
+    nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', closeNav); });
   })();
 </script>
 
