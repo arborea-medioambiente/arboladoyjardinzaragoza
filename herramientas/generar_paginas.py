@@ -335,7 +335,7 @@ paginas = {
     [("Tala controlada", "<p>Cuando no hay espacio para que el árbol caiga entero, lo desmontamos por trozos desde arriba y los bajamos con cuerdas. Así no se daña nada alrededor. Si hace falta cortar la calle o pedir permiso al ayuntamiento, nos ocupamos nosotros.</p>"),
      ("Destoconado", "<p>El tocón que queda después de una tala estorba, vuelve a echar brotes y puede levantar el suelo. Lo quitamos con una destoconadora, que lo tritura por debajo del nivel del suelo, y dejamos el hueco listo para plantar, poner césped o pavimentar.</p>"),
      ("Qué nos llevamos", "<p>Tronco, ramas, serrín y restos del tocón. Si quiere quedarse la leña, se la dejamos cortada.</p>")],
-    foto(r, "tocon-alcorque", "Tocón en un alcorque rodeado de baldosas", "Tocón en un alcorque de baldosas.", 675, 1200),
+    "",
     [("¿Necesito permiso para talar un árbol?", "Depende del municipio, de la especie y de si el terreno es urbano o rústico. Se lo decimos al ver el árbol y, si hace falta, lo pedimos nosotros."),
      ("¿Qué pasa si no quito el tocón?", "Muchos árboles vuelven a brotar desde el tocón y las raíces, y con los años se pudre y atrae hongos e insectos."),
      ("¿Se puede plantar en el mismo sitio?", "Sí. Después del destoconado rellenamos el hueco con tierra y ya se puede plantar.")]),
