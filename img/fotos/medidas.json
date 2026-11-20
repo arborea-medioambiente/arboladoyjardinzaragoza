@@ -1,0 +1,42 @@
+{
+ "arbol-exudado": [
+  1097,
+  1200
+ ],
+ "arbol-grieta-base": [
+  1200,
+  675
+ ],
+ "corte-de-poda": [
+  1200,
+  849
+ ],
+ "desbroce-pinar": [
+  1200,
+  674
+ ],
+ "desbroce-restos": [
+  1200,
+  674
+ ],
+ "desbroce-tractor": [
+  1200,
+  674
+ ],
+ "jardin-chalet": [
+  1200,
+  927
+ ],
+ "motosierra-corte-tronco": [
+  1200,
+  927
+ ],
+ "siega-cesped-jardin": [
+  900,
+  1200
+ ],
+ "tocon-recien-cortado": [
+  1200,
+  849
+ ]
+}

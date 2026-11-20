@@ -1,10 +1,18 @@
 #!/usr/bin/env python3
 """Genera las páginas estáticas de arboladoyjardinzaragoza.es (cabecera y pie comunes)."""
-"""Uso: python herramientas/generar_paginas.py .   (desde la raíz del repositorio). Rehace index.html, servicios/, las páginas legales y sitemap.xml."""
-import sys, html
+"""Uso: python herramientas/generar_paginas.py .   (desde la raíz del repositorio). Rehace index.html, servicios/, las páginas legales, sitemap.xml, robots.txt y llms.txt."""
+import sys, html, json
+from datetime import date
 from pathlib import Path
 
 OUT = Path(sys.argv[1])
+# Medidas de cada foto; las apunta herramientas/preparar_fotos.py
+MEDIDAS = json.loads((OUT / "img" / "fotos" / "medidas.json").read_text(encoding="utf-8"))
+# Municipios de alrededor de Zaragoza donde se trabaja. Sale en la portada, en las
+# preguntas frecuentes, en los datos para buscadores y en llms.txt.
+ZONA = ["Cuarte de Huerva", "Cadrete", "María de Huerva", "La Muela", "Utebo", "Villanueva de Gállego",
+        "Zuera", "San Mateo de Gállego", "La Puebla de Alfindén", "Pastriz", "Alfajarín", "El Burgo de Ebro"]
+ZONA_TXT = ", ".join(ZONA[:-1]) + " y " + ZONA[-1]
 MARCA = "Arbolado y Jardín Zaragoza"
 MARCA_A, MARCA_B = "Arbolado y Jardín", " Zaragoza"
 DOM = "https://arboladoyjardinzaragoza.es"
@@ -33,6 +41,7 @@ def cabecera(titulo, desc, ruta, raiz, schema=""):
 <title>{html.escape(titulo)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <link rel="canonical" href="{canon}">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#14532d">
 <link rel="icon" href="{raiz}img/verdalia-favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
@@ -41,7 +50,9 @@ def cabecera(titulo, desc, ruta, raiz, schema=""):
 <meta property="og:title" content="{html.escape(titulo)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:url" content="{canon}">
-<meta property="og:image" content="{DOM}/img/fotos/tala-pino-junto-a-viviendas.webp">
+<meta property="og:image" content="{DOM}/img/compartir.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
@@ -132,49 +143,79 @@ def pie(raiz):
 </html>
 """
 
-def foto(raiz, nombre, alt, pie_foto, ancho, alto):
+def imagen(raiz, nombre, alt, tamanos, clase="", primera=False):
+    """Foto en dos tamaños (600 px y la grande), para que el móvil baje la pequeña."""
+    ancho, alto = MEDIDAS[nombre]
+    base = f"{raiz}img/fotos/{nombre}"
+    carga = ' fetchpriority="high"' if primera else ' loading="lazy" decoding="async"'
+    return (f'<img{f" class={chr(34)}{clase}{chr(34)}" if clase else ""} src="{base}.webp" '
+            f'srcset="{base}-600.webp 600w, {base}.webp {ancho}w" sizes="{tamanos}" '
+            f'alt="{html.escape(alt)}" width="{ancho}" height="{alto}"{carga}>')
+
+def foto(raiz, nombre, alt, pie_foto):
     return f"""<figure class="foto">
-          <img src="{raiz}img/fotos/{nombre}.webp" alt="{html.escape(alt)}" width="{ancho}" height="{alto}" loading="lazy">
+          <a href="{raiz}img/fotos/{nombre}.webp">{imagen(raiz, nombre, alt, "(max-width: 560px) 100vw, 360px")}</a>
           <figcaption>{pie_foto}</figcaption>
         </figure>"""
 
-SCHEMA = f"""<script type="application/ld+json">
-{{
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "{MARCA}",
-  "description": "Jardinería, poda, tala, destoconado y desbroce de fincas en Zaragoza y alrededores, desde las autorizaciones hasta la retirada de los restos.",
-  "url": "{DOM}/",
-  "image": "{DOM}/img/fotos/tala-pino-junto-a-viviendas.webp",
-  "telephone": "{TEL}",
-  "email": "{EMAIL}",
-  "areaServed": "Zaragoza y alrededores",
-  "address": {{
-    "@type": "PostalAddress",
-    "streetAddress": "Calle Riglos 9",
-    "postalCode": "50012",
-    "addressLocality": "Zaragoza",
-    "addressCountry": "ES"
-  }},
-  "knowsAbout": ["Jardinería", "Arboricultura", "Poda de árboles", "Tala controlada", "Destoconado", "Desbroce de fincas rústicas", "Prevención de incendios"]
-}}
-</script>
-"""
+# ---------- Datos para buscadores y asistentes de IA (schema.org) ----------
+NEGOCIO_ID = DOM + "/#negocio"
+DESC_NEGOCIO = ("Empresa de jardinería y arbolado de Zaragoza: mantenimiento de jardines, poda de árboles, tala controlada, "
+                "destoconado y desbroce de parcelas y fincas en Zaragoza y los municipios de alrededor, desde los permisos "
+                "hasta la retirada de los restos.")
+DIRECCION_LD = {"@type": "PostalAddress", "streetAddress": "Calle Riglos 9", "postalCode": "50012",
+                "addressLocality": "Zaragoza", "addressRegion": "Zaragoza", "addressCountry": "ES"}
+ZONA_LD = [{"@type": "City", "name": m} for m in ["Zaragoza"] + ZONA]
+
+def ld(*nodos):
+    return ('<script type="application/ld+json">\n'
+            + json.dumps({"@context": "https://schema.org", "@graph": list(nodos)}, ensure_ascii=False, indent=1)
+            + "\n</script>\n")
+
+def faq_ld(faq):
+    return {"@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
+
+def faq_html(faq):
+    return "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in faq)
+
+NEGOCIO_LD = {
+    "@type": "HomeAndConstructionBusiness", "@id": NEGOCIO_ID, "name": MARCA, "description": DESC_NEGOCIO,
+    "url": DOM + "/", "telephone": TEL, "email": EMAIL, "address": DIRECCION_LD, "areaServed": ZONA_LD,
+    "image": [DOM + "/img/compartir.jpg", DOM + "/img/fotos/siega-cesped-jardin.webp"],
+    "contactPoint": {"@type": "ContactPoint", "telephone": TEL, "contactType": "customer service",
+                     "availableLanguage": "es", "areaServed": "ES"},
+    "knowsAbout": ["Jardinería", "Mantenimiento de jardines", "Arboricultura", "Poda de árboles", "Poda en altura",
+                   "Tala controlada", "Destoconado", "Desbroce de parcelas y fincas", "Prevención de incendios"],
+    "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Servicios", "itemListElement": [
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": n, "url": f"{DOM}/servicios/{s}.html"}}
+        for s, n in SERVICIOS]},
+}
+# En las páginas de servicio, el negocio va resumido y enlazado al de la portada por su @id.
+NEGOCIO_CORTO_LD = {k: NEGOCIO_LD[k] for k in ("@type", "@id", "name", "url", "telephone", "address")}
+
+FAQ_PORTADA = [
+    ("¿Qué trabajos hacen?", "Mantenimiento de jardines (siega, setos, riego y limpieza), poda de árboles, también en altura, tala controlada, destoconado y desbroce de parcelas y fincas. Al terminar nos llevamos los restos."),
+    ("¿En qué zona trabajan?", f"En Zaragoza capital y en los municipios y urbanizaciones de alrededor: {ZONA_TXT}, entre otros."),
+    ("¿Se ocupan de los permisos?", "Sí. Si la poda, la tala o el desbroce necesitan permiso del ayuntamiento o de Medio Ambiente, lo tramitamos nosotros."),
+    ("¿Atienden urgencias?", "Sí. Si un árbol o una rama pueden caer tras un temporal, avísenos: si es posible, vamos el mismo día."),
+    ("¿Cómo pido presupuesto?", f"Por WhatsApp o por teléfono en el {TEL_TXT}, o por correo. Cuéntenos qué necesita y dónde y, si puede, mándenos una foto. El presupuesto es sin compromiso."),
+]
+
+SCHEMA = ld({"@type": "WebSite", "@id": DOM + "/#web", "url": DOM + "/", "name": MARCA, "inLanguage": "es",
+             "publisher": {"@id": NEGOCIO_ID}},
+            NEGOCIO_LD, faq_ld(FAQ_PORTADA))
 
 # ---------- Portada ----------
-def tarjeta(slug, titulo, texto, img=None, icono=None):
-    media = (f'<img class="card-img" src="img/fotos/{img}.webp" alt="" loading="lazy">' if img
-             else f'<div class="card-icono" aria-hidden="true">{icono}</div>')
+def tarjeta(slug, titulo, texto, img, alt):
     return f"""<a class="card card-link" href="servicios/{slug}.html">
-            {media}
+            {imagen("", img, alt, "(max-width: 560px) 100vw, (max-width: 980px) 50vw, 280px", "card-img")}
             <div class="card-body">
               <h3>{titulo}</h3>
               <p>{texto}</p>
               <span class="card-mas">Ver el servicio →</span>
             </div>
           </a>"""
-
-ICONO_JARDIN = '<svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 40h36"/><path d="M14 40c0-7 2-12 6-16"/><path d="M20 24c-6 1-10-2-11-8 6-1 10 2 11 8z"/><path d="M20 24c2-7 7-10 14-10-1 7-6 11-14 10z"/><path d="M30 40v-6"/><path d="M27 34h6"/><path d="M36 40c0-4 1-7 4-9"/></svg>'
 
 portada = cabecera("Jardinería, poda y tala en Zaragoza | " + MARCA,
     "Mantenimiento de jardines, poda, tala, destoconado y desbroce de fincas en Zaragoza y alrededores. Nos ocupamos de todo, desde los permisos hasta la retirada de los restos.",
@@ -189,7 +230,7 @@ portada = cabecera("Jardinería, poda y tala en Zaragoza | " + MARCA,
           <a class="btn btn-ghost" href="tel:{TEL}">Llamar: {TEL_TXT}</a>
         </div>
       </div>
-      <img class="hero-image" src="img/fotos/tala-pino-junto-a-viviendas.webp" alt="Pino grande e inclinado junto a una calle con viviendas y coches aparcados" width="900" height="1200">
+      {imagen("", "siega-cesped-jardin", "Siega del césped en un jardín con setos altos y un árbol de sombra", "(max-width: 900px) 100vw, 480px", "hero-image", primera=True)}
     </div>
   </section>
 
@@ -205,10 +246,10 @@ portada = cabecera("Jardinería, poda y tala en Zaragoza | " + MARCA,
       <h2>Servicios</h2>
       <p class="section-sub">De forma periódica o para un trabajo puntual.</p>
       <div class="cards cards-4">
-          {tarjeta(SERVICIOS[0][0], SERVICIOS[0][1], "Siega, setos, riego y limpieza con visitas programadas. También plantación y reforma de zonas del jardín.", icono=ICONO_JARDIN)}
-          {tarjeta(SERVICIOS[1][0], SERVICIOS[1][1], "Poda de formación, de limpieza y en altura. Revisamos si el árbol tiene grietas, pudriciones o ramas con riesgo.", img="arbol-exudado")}
-          {tarjeta(SERVICIOS[2][0], SERVICIOS[2][1], "Tala controlada de árboles junto a casas, muros o cables, y retirada del tocón para recuperar el espacio.", img="destoconado-jardin")}
-          {tarjeta(SERVICIOS[3][0], SERVICIOS[3][1], "Desbroce de parcelas y fincas para cumplir la normativa y reducir el riesgo de incendio.", img="desbroce-pinar")}
+          {tarjeta(SERVICIOS[0][0], SERVICIOS[0][1], "Siega, setos, riego y limpieza con visitas programadas. También plantación y reforma de zonas del jardín.", "jardin-chalet", "Jardín de un chalet con el césped recién segado, un seto alto recortado y cipreses al fondo")}
+          {tarjeta(SERVICIOS[1][0], SERVICIOS[1][1], "Poda de formación, de limpieza y en altura. Revisamos si el árbol tiene grietas, pudriciones o ramas con riesgo.", "corte-de-poda", "Corte de poda limpio en un plátano de sombra")}
+          {tarjeta(SERVICIOS[2][0], SERVICIOS[2][1], "Tala controlada de árboles junto a casas, muros o cables, y retirada del tocón para recuperar el espacio.", "motosierra-corte-tronco", "Motosierra cortando el tronco de un árbol")}
+          {tarjeta(SERVICIOS[3][0], SERVICIOS[3][1], "Desbroce de parcelas y fincas para cumplir la normativa y reducir el riesgo de incendio.", "desbroce-tractor", "Tractor con desbrozadora limpiando el matorral junto a unas encinas")}
       </div>
     </div>
   </section>
@@ -254,10 +295,17 @@ portada = cabecera("Jardinería, poda y tala en Zaragoza | " + MARCA,
   <section id="zona" class="section section-alt">
     <div class="container zona-inner">
       <h2>Zona de servicio</h2>
-      <p>Zaragoza capital y las urbanizaciones y pueblos de alrededor. Si no sabe si llegamos a su zona, pregúntenos sin compromiso.</p>
+      <p>Zaragoza capital y los municipios y urbanizaciones de alrededor: {ZONA_TXT}. Si no sabe si llegamos a su zona, pregúntenos sin compromiso.</p>
       <div class="mapa-embed" data-mapa="https://maps.google.com/maps?q=Calle%20Riglos%209%2C%2050012%20Zaragoza&amp;z=11&amp;output=embed">
         <button type="button" class="mapa-cargar">Ver el mapa (Google Maps)</button>
       </div>
+    </div>
+  </section>
+
+  <section id="preguntas" class="section">
+    <div class="container prosa prosa-centro">
+      <h2>Preguntas frecuentes</h2>
+      <div class="faq">{faq_html(FAQ_PORTADA)}</div>
     </div>
   </section>
 """ + contacto() + pie("")
@@ -266,12 +314,15 @@ portada = cabecera("Jardinería, poda y tala en Zaragoza | " + MARCA,
 # ---------- Páginas de servicio ----------
 def pagina_servicio(slug, titulo_seo, desc, h1, intro, bloques, fotos_html, faq):
     raiz = "../"
-    faq_html = "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in faq)
-    faq_schema = ",".join(
-        '{"@type":"Question","name":%s,"acceptedAnswer":{"@type":"Answer","text":%s}}' % (
-            __import__("json").dumps(q, ensure_ascii=False), __import__("json").dumps(a, ensure_ascii=False))
-        for q, a in faq)
-    schema = ('<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[%s]}</script>\n' % faq_schema)
+    url = f"{DOM}/servicios/{slug}.html"
+    nombre = dict(SERVICIOS)[slug]
+    schema = ld(
+        {"@type": "Service", "@id": url + "#servicio", "name": h1, "serviceType": nombre, "description": desc,
+         "url": url, "provider": NEGOCIO_CORTO_LD, "areaServed": ZONA_LD},
+        {"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Inicio", "item": DOM + "/"},
+            {"@type": "ListItem", "position": 2, "name": nombre, "item": url}]},
+        faq_ld(faq))
     cuerpo = "".join(f"<h2>{t}</h2>{c}" for t, c in bloques)
     otros = "".join(f'<li><a href="{s}.html">{n}</a></li>' for s, n in SERVICIOS if s != slug)
     return cabecera(titulo_seo + " | " + MARCA, desc, f"servicios/{slug}.html", raiz, schema) + f"""
@@ -292,7 +343,7 @@ def pagina_servicio(slug, titulo_seo, desc, h1, intro, bloques, fotos_html, faq)
       {cuerpo}
       {('<div class="galeria">' + fotos_html + '</div>') if fotos_html else ''}
       <h2>Preguntas frecuentes</h2>
-      <div class="faq">{faq_html}</div>
+      <div class="faq">{faq_html(faq)}</div>
       <h2>Otros servicios</h2>
       <ul class="otros">{otros}</ul>
     </div>
@@ -310,7 +361,8 @@ paginas = {
     [("Qué incluye", "<ul class='lista-check'><li>Siega y perfilado del césped.</li><li>Recorte de setos y arbustos.</li><li>Poda ligera de árboles pequeños y frutales.</li><li>Revisión y ajuste del riego automático, y arreglo de goteros y aspersores.</li><li>Limpieza de hojas, malas hierbas y restos, que nos llevamos.</li></ul>"),
      ("Visitas periódicas o trabajos sueltos", "<p>Puede contratar visitas cada semana, cada quince días o cada mes, según el tamaño del jardín y la época del año. También hacemos trabajos sueltos: una limpieza a fondo antes del verano, poner el jardín a punto antes de una celebración o cambiar una zona de césped por plantas que necesiten menos agua.</p>"),
      ("Plantación y reforma", "<p>Plantamos árboles, arbustos y césped nuevo, y rehacemos zonas del jardín pensando en el clima de Zaragoza: verano seco, cierzo y heladas. Le aconsejamos especies que aguanten bien y gasten poca agua.</p>")],
-    "",
+    foto(r, "siega-cesped-jardin", "Siega del césped en un jardín con setos altos y un árbol de sombra", "Siega del césped.") +
+    foto(r, "jardin-chalet", "Jardín de un chalet con el césped recién segado, un seto alto recortado y cipreses al fondo", "Césped segado y seto recortado."),
     [("¿Cada cuánto conviene la visita?", "En primavera y verano el césped crece rápido y suele hacer falta una visita cada una o dos semanas. En otoño e invierno basta con una al mes."),
      ("¿Se llevan los restos?", "Sí. Al terminar recogemos hojas, ramas y césped cortado y nos los llevamos."),
      ("¿Trabajan para comunidades de vecinos?", "Sí, tanto para chalets particulares como para zonas verdes de comunidades y urbanizaciones.")]),
@@ -322,8 +374,9 @@ paginas = {
     [("Tipos de poda", "<ul class='lista-check'><li><strong>De formación</strong>, en árboles jóvenes, para que crezcan con una buena estructura.</li><li><strong>De limpieza</strong>: ramas secas, rotas o enfermas.</li><li><strong>De seguridad</strong>: ramas que tocan el tejado, la fachada o los cables, o que pueden caer.</li><li><strong>En altura</strong>, con técnica de trepa cuando no llega una plataforma.</li></ul>"),
      ("Antes de podar, miramos el árbol", "<p>Muchos problemas no se ven a simple vista: grietas en la base, pudriciones dentro del tronco o heridas que sueltan resina. Revisamos el árbol y le decimos si basta con una poda o si conviene hacer algo más. Podar de más debilita el árbol, así que cortamos solo lo necesario.</p>"),
      ("Pinos y árboles protegidos", "<p>En algunos municipios hace falta permiso para podar o talar ciertos árboles. Si es su caso, lo tramitamos nosotros.</p>")],
-    foto(r, "arbol-exudado", "Tronco con una herida que suelta resina", "Herida en el tronco que suelta resina.", 1097, 1200) +
-    foto(r, "arbol-grieta-base", "Grieta en la base del tronco de un árbol sobre césped", "Grieta en la base del tronco.", 1200, 675),
+    foto(r, "corte-de-poda", "Corte de poda limpio en un plátano de sombra", "Corte de poda limpio.") +
+    foto(r, "arbol-exudado", "Tronco con una herida que suelta resina", "Herida en el tronco que suelta resina.") +
+    foto(r, "arbol-grieta-base", "Grieta en la base del tronco de un árbol sobre césped", "Grieta en la base del tronco."),
     [("¿Cuándo es mejor podar?", "La mayoría de árboles se podan mejor en invierno, con la savia parada. Las ramas peligrosas o secas se pueden quitar en cualquier época."),
      ("¿Un árbol inclinado es peligroso?", "No siempre. Depende de si la inclinación es antigua, de cómo está la base y de si el suelo se ha levantado. Lo mejor es que lo veamos."),
      ("¿Se llevan las ramas?", "Sí. Troceamos y retiramos todos los restos, o los dejamos triturados si los quiere para el jardín.")]),
@@ -335,7 +388,8 @@ paginas = {
     [("Tala controlada", "<p>Cuando no hay espacio para que el árbol caiga entero, lo desmontamos por trozos desde arriba y los bajamos con cuerdas. Así no se daña nada alrededor. Si hace falta cortar la calle o pedir permiso al ayuntamiento, nos ocupamos nosotros.</p>"),
      ("Destoconado", "<p>El tocón que queda después de una tala estorba, vuelve a echar brotes y puede levantar el suelo. Lo quitamos con una destoconadora, que lo tritura por debajo del nivel del suelo, y dejamos el hueco listo para plantar, poner césped o pavimentar.</p>"),
      ("Qué nos llevamos", "<p>Tronco, ramas, serrín y restos del tocón. Si quiere quedarse la leña, se la dejamos cortada.</p>")],
-    "",
+    foto(r, "motosierra-corte-tronco", "Motosierra cortando el tronco de un árbol", "Corte del tronco con motosierra.") +
+    foto(r, "tocon-recien-cortado", "Tocón de un pino recién talado, con el corte limpio y serrín alrededor", "Tocón recién cortado, antes de destoconar."),
     [("¿Necesito permiso para talar un árbol?", "Depende del municipio, de la especie y de si el terreno es urbano o rústico. Se lo decimos al ver el árbol y, si hace falta, lo pedimos nosotros."),
      ("¿Qué pasa si no quito el tocón?", "Muchos árboles vuelven a brotar desde el tocón y las raíces, y con los años se pudre y atrae hongos e insectos."),
      ("¿Se puede plantar en el mismo sitio?", "Sí. Después del destoconado rellenamos el hueco con tierra y ya se puede plantar.")]),
@@ -347,9 +401,9 @@ paginas = {
     [("Por qué desbrozar", "<p>La hierba seca y el matorral arden con mucha facilidad en verano. Muchos ayuntamientos obligan a tener las parcelas limpias y pueden multar si no lo están. En las urbanizaciones junto al monte, una franja limpia alrededor de las casas es la mejor protección frente a un incendio.</p>"),
      ("Qué hacemos", "<ul class='lista-check'><li>Desbroce de hierba y matorral, a mano o con la máquina que pida el terreno.</li><li>Poda de las ramas bajas de los árboles, para que el fuego no suba a las copas.</li><li>Franjas de protección alrededor de casas y vallas.</li><li>Retirada o triturado de todos los restos.</li></ul>"),
      ("Cuándo hacerlo", "<p>Lo mejor es desbrozar a finales de primavera, cuando la hierba ya ha crecido y antes de que se seque. En fincas grandes conviene repasar a finales de verano.</p>")],
-    foto(r, "desbroce-pinar", "Pinar con el matorral desbrozado y los restos amontonados", "Pinar con el matorral desbrozado.", 1200, 674) +
-    foto(r, "desbroce-restos", "Terreno desbrozado con restos de ramas", "Zona desbrozada, antes de retirar los restos.", 1200, 674) +
-    foto(r, "finca-rustica", "Finca rústica de cereal con una casa y árboles al fondo", "Finca rústica.", 1200, 674),
+    foto(r, "desbroce-tractor", "Tractor con desbrozadora limpiando el matorral junto a unas encinas", "Desbroce con tractor y desbrozadora.") +
+    foto(r, "desbroce-pinar", "Pinar con el matorral desbrozado y los restos amontonados", "Pinar con el matorral desbrozado.") +
+    foto(r, "desbroce-restos", "Terreno desbrozado con restos de ramas", "Zona desbrozada, antes de retirar los restos."),
     [("¿Me pueden multar si no desbrozo?", "Sí. Muchas ordenanzas municipales obligan a mantener limpios los solares y parcelas, sobre todo en verano."),
      ("¿Queman los restos?", "No. Los retiramos o los trituramos y los dejamos en el terreno, que protege el suelo."),
      ("¿Trabajan en fincas grandes?", "Sí. Díganos la superficie y le preparamos el presupuesto; en los bordes y junto a los árboles siempre se repasa a mano.")]),
@@ -385,7 +439,7 @@ NIF = PEND.format("NIF")
 <h2>Uso de la web</h2>
 <p>Esta web informa de nuestros servicios y de cómo contactar con nosotros. Quien la usa se compromete a hacerlo de buena fe y conforme a la ley.</p>
 <h2>Propiedad intelectual</h2>
-<p>Los textos, fotos y logotipos de esta web son de su titular o se usan con permiso. No se pueden copiar ni reutilizar sin autorización.</p>
+<p>Los textos, fotos y logotipos de esta web son de su titular o se usan con permiso. No se pueden copiar ni reutilizar sin autorización. Algunas imágenes son ilustrativas y se han creado con inteligencia artificial.</p>
 <h2>Enlaces</h2>
 <p>Los enlaces a otras webs (WhatsApp, Google Maps) se ofrecen para su comodidad. No respondemos del contenido de esas webs.</p>
 <h2>Ley aplicable</h2>
@@ -426,8 +480,49 @@ NIF = PEND.format("NIF")
 """), encoding="utf-8")
 
 # ---------- sitemap ----------
+HOY = date.today().isoformat()
 urls = [""] + [f"servicios/{s}.html" for s, _ in SERVICIOS] + ["aviso-legal.html", "privacidad.html", "cookies.html"]
 sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
-    f"  <url><loc>{DOM}/{u}</loc><lastmod>2026-11-19</lastmod></url>\n" for u in urls) + "</urlset>\n"
+    f"  <url><loc>{DOM}/{u}</loc><lastmod>{HOY}</lastmod></url>\n" for u in urls) + "</urlset>\n"
 (OUT / "sitemap.xml").write_text(sm, encoding="utf-8")
+
+# ---------- robots.txt: buscadores y asistentes de IA, todos bienvenidos ----------
+BOTS_IA = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot", "Claude-User",
+           "PerplexityBot", "Perplexity-User", "Google-Extended", "Applebot-Extended", "Bingbot"]
+(OUT / "robots.txt").write_text(
+    "User-agent: *\nAllow: /\n\n"
+    "# Asistentes de IA (ChatGPT, Claude, Perplexity, Gemini, Copilot...): pueden leer y citar la web.\n"
+    + "".join(f"User-agent: {b}\n" for b in BOTS_IA) + "Allow: /\n\n"
+    f"Sitemap: {DOM}/sitemap.xml\n", encoding="utf-8")
+
+# ---------- llms.txt: resumen de la web en texto llano, para asistentes de IA ----------
+RESUMEN = {
+    "mantenimiento-de-jardines": "siega, setos, riego, limpieza y plantación en chalets y comunidades, con visitas programadas o trabajos sueltos.",
+    "poda-de-arboles": "poda de formación, de limpieza, de seguridad y en altura, con revisión previa del estado del árbol.",
+    "tala-y-destoconado": "tala controlada junto a casas, muros o cables, y retirada del tocón con destoconadora.",
+    "desbroce-y-prevencion-de-incendios": "desbroce de parcelas, solares y fincas para cumplir la normativa y reducir el riesgo de incendio.",
+}
+(OUT / "llms.txt").write_text(f"""# {MARCA}
+
+> {DESC_NEGOCIO}
+
+## Datos
+
+- Qué es: empresa de jardinería y arbolado para chalets, comunidades de vecinos y fincas rústicas.
+- Dónde trabaja: Zaragoza capital y los municipios de alrededor ({ZONA_TXT}, entre otros).
+- Teléfono y WhatsApp: {TEL_TXT} ({TEL})
+- Correo: {EMAIL}
+- Dirección: {DIR}, España
+- Web: {DOM}/
+- Presupuesto sin compromiso. Si el trabajo necesita permiso del ayuntamiento o de Medio Ambiente, lo tramita la empresa. Los restos se retiran al terminar.
+- Urgencias: árboles o ramas con riesgo de caída tras un temporal; si es posible, el mismo día.
+
+## Servicios
+
+""" + "".join(f"- [{n}]({DOM}/servicios/{s}.html): {RESUMEN[s]}\n" for s, n in SERVICIOS) + f"""
+## Legal
+
+- [Aviso legal]({DOM}/aviso-legal.html)
+- [Privacidad]({DOM}/privacidad.html)
+""", encoding="utf-8")
 print("ok")
