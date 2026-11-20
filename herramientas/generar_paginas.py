@@ -32,7 +32,7 @@ SERVICIOS = [
     ("desbroce-y-prevencion-de-incendios", "Desbroce y prevención de incendios"),
 ]
 
-def cabecera(titulo, desc, ruta, raiz, schema=""):
+def cabecera(titulo, desc, ruta, raiz, schema="", indexar=True):
     canon = DOM + "/" + ruta
     return f"""<!doctype html>
 <html lang="es">
@@ -42,7 +42,7 @@ def cabecera(titulo, desc, ruta, raiz, schema=""):
 <title>{html.escape(titulo)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <link rel="canonical" href="{canon}">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="{"index, follow, max-image-preview:large" if indexar else "noindex, follow"}">
 <meta name="theme-color" content="#14532d">
 <link rel="icon" href="{raiz}img/verdalia-favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
@@ -431,7 +431,7 @@ for slug, contenido in paginas.items():
 # ---------- Páginas legales ----------
 PEND = '<mark class="pendiente">[PENDIENTE: {}]</mark>'
 def legal(slug, titulo, cuerpo):
-    return cabecera(titulo + " | " + MARCA, titulo + " de " + MARCA + ".", slug + ".html", "") + f"""
+    return cabecera(titulo + " | " + MARCA, titulo + " de " + MARCA + ".", slug + ".html", "", indexar=False) + f"""
   <section class="section">
     <div class="container prosa">
       <h1>{titulo}</h1>
@@ -440,7 +440,7 @@ def legal(slug, titulo, cuerpo):
   </section>
 """ + pie("")
 
-TITULAR = PEND.format("nombre y apellidos o razón social")
+TITULAR = "Jorge Lax López"
 NIF = PEND.format("NIF")
 (OUT / "aviso-legal.html").write_text(legal("aviso-legal", "Aviso legal", f"""
 <p>En cumplimiento de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico (LSSI), le informamos de quién está detrás de esta web.</p>
@@ -498,7 +498,7 @@ NIF = PEND.format("NIF")
 
 # ---------- sitemap ----------
 HOY = date.today().isoformat()
-urls = [""] + [f"servicios/{s}.html" for s, _ in SERVICIOS] + ["aviso-legal.html", "privacidad.html", "cookies.html"]
+urls = [""] + [f"servicios/{s}.html" for s, _ in SERVICIOS]
 sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
     f"  <url><loc>{DOM}/{u}</loc><lastmod>{HOY}</lastmod></url>\n" for u in urls) + "</urlset>\n"
 (OUT / "sitemap.xml").write_text(sm, encoding="utf-8")
@@ -537,10 +537,5 @@ RESUMEN = {
 
 ## Servicios
 
-""" + "".join(f"- [{n}]({DOM}/servicios/{s}.html): {RESUMEN[s]}\n" for s, n in SERVICIOS) + f"""
-## Legal
-
-- [Aviso legal]({DOM}/aviso-legal.html)
-- [Privacidad]({DOM}/privacidad.html)
-""", encoding="utf-8")
+""" + "".join(f"- [{n}]({DOM}/servicios/{s}.html): {RESUMEN[s]}\n" for s, n in SERVICIOS) + f"""""", encoding="utf-8")
 print("ok")
