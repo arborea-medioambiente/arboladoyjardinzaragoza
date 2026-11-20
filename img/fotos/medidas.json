@@ -1,0 +1,34 @@
+{
+ "desbroce-tractor": [
+  1200,
+  674
+ ],
+ "jardin-chalet": [
+  1200,
+  896
+ ],
+ "poda-en-altura-cuerdas": [
+  1200,
+  670
+ ],
+ "restos-de-poda-saca": [
+  1200,
+  670
+ ],
+ "riego-arqueta-electrovalvulas": [
+  1200,
+  670
+ ],
+ "riego-zanja-tuberia": [
+  1200,
+  670
+ ],
+ "siega-cesped-jardin": [
+  896,
+  1200
+ ],
+ "tala-tocon-motosierra": [
+  1200,
+  670
+ ]
+}

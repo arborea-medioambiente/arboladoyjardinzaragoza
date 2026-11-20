@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de cookies | Arbolado y Jardín Zaragoza</title>
+<meta name="description" content="Política de cookies de Arbolado y Jardín Zaragoza.">
+<link rel="canonical" href="https://arboladoyjardinzaragoza.es/cookies.html">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#14532d">
+<link rel="icon" href="img/verdalia-favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Arbolado y Jardín Zaragoza">
+<meta property="og:title" content="Política de cookies | Arbolado y Jardín Zaragoza">
+<meta property="og:description" content="Política de cookies de Arbolado y Jardín Zaragoza.">
+<meta property="og:url" content="https://arboladoyjardinzaragoza.es/cookies.html">
+<meta property="og:image" content="https://arboladoyjardinzaragoza.es/img/compartir.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script src="js/cookies.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="" aria-label="Arbolado y Jardín Zaragoza, inicio">
+      <img class="logo-mark" src="img/verdalia-hoja.svg" alt="" aria-hidden="true">
+      <span class="logo-text">Arbolado y Jardín<span> Zaragoza</span></span>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="#servicios">Servicios</a>
+      <a href="#expres">Urgencias</a>
+      <a href="#zona">Zona</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-primary btn-header" href="https://wa.me/34876657235?text=%5BJARDINERIA%5D%20Hola%2C%20vengo%20de%20arboladoyjardinzaragoza.es.%20Os%20cuento%20qu%C3%A9%20necesito%20y%20d%C3%B3nde%3A%20" target="_blank" rel="noopener">WhatsApp</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-controls="nav" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="section">
+    <div class="container prosa">
+      <h1>Política de cookies</h1>
+      
+<p>Una cookie es un pequeño fichero que una web guarda en su navegador. Esta web solo usa las que usted acepte, salvo la que recuerda su decisión.</p>
+<h2>Qué cookies usamos</h2>
+<table class="tabla">
+<thead><tr><th>Cookie</th><th>De quién</th><th>Para qué</th><th>Duración</th></tr></thead>
+<tbody>
+<tr><td>ajz_cookies (almacenamiento local)</td><td>Esta web</td><td>Recordar si aceptó o rechazó la analítica. Es necesaria.</td><td>Hasta que la borre</td></tr>
+<tr><td>_ga, _ga_*</td><td>Google Analytics</td><td>Contar visitas y ver qué páginas se leen y desde dónde llegan. Solo si la acepta.</td><td>Hasta 2 años</td></tr>
+</tbody>
+</table>
+<p>El mapa de la zona de servicio es de Google Maps y solo se carga si pulsa «Ver el mapa». Google puede poner entonces sus propias cookies.</p>
+<h2>Cómo cambiar su decisión</h2>
+<p>Pulse <a href="#" data-cookies-config>Configurar cookies</a> (también está al pie de cada página). También puede borrar las cookies desde la configuración de su navegador.</p>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-firma">
+      <span class="logo-text">Arbolado y Jardín<span> Zaragoza</span></span>
+      <span class="footer-sep">·</span>Jardinería, arbolado y prevención de incendios
+    </p>
+    <p class="footer-contacto"><a href="tel:+34876657235">876 65 72 35</a> · <a href="mailto:info@arboladoyjardinzaragoza.es">info@arboladoyjardinzaragoza.es</a> · Calle Riglos 9, 50012 Zaragoza</p>
+  </div>
+  <div class="container footer-inner footer-links">
+    <p><a href="servicios/mantenimiento-de-jardines.html">Mantenimiento de jardines</a> · <a href="servicios/riego-automatico.html">Riego automático</a> · <a href="servicios/poda-de-arboles.html">Poda y arboricultura</a> · <a href="servicios/tala-y-destoconado.html">Tala y destoconado</a> · <a href="servicios/desbroce-y-prevencion-de-incendios.html">Desbroce y prevención de incendios</a></p>
+    <p><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a> · <a href="#" data-cookies-config>Configurar cookies</a></p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle = document.getElementById('nav-toggle');
+    var nav = document.getElementById('nav');
+    if (!toggle || !nav) return;
+    function closeNav() {
+      nav.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+    toggle.addEventListener('click', function () {
+      var abierto = nav.classList.toggle('open');
+      toggle.classList.toggle('open', abierto);
+      toggle.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+    });
+    nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', closeNav); });
+  })();
+</script>
+
+</body>
+</html>
