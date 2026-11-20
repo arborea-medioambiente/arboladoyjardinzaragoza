@@ -16,10 +16,10 @@ ZONA_TXT = ", ".join(ZONA[:-1]) + " y " + ZONA[-1]
 MARCA = "Arbolado y Jardín Zaragoza"
 MARCA_A, MARCA_B = "Arbolado y Jardín", " Zaragoza"
 DOM = "https://arboladoyjardinzaragoza.es"
-TEL, TEL_TXT = "+34624757421", "624 75 74 21"
-EMAIL = "info@verdaliama.es"
+TEL, TEL_TXT = "+34876657235", "876 65 72 35"
+EMAIL = "info@arboladoyjardinzaragoza.es"
 DIR = "Calle Riglos 9, 50012 Zaragoza"
-WA = ("https://wa.me/34624757421?text=%5BJARDINERIA%5D%20Hola%2C%20vengo%20de%20"
+WA = ("https://wa.me/34876657235?text=%5BJARDINERIA%5D%20Hola%2C%20vengo%20de%20"
       "arboladoyjardinzaragoza.es.%20Os%20cuento%20qu%C3%A9%20necesito%20y%20d%C3%B3nde%3A%20")
 MAILTO = ("mailto:" + EMAIL + "?subject=Presupuesto%20de%20jardiner%C3%ADa&body=Hola%2C%20os%20escribo%20"
           "desde%20arboladoyjardinzaragoza.es.%0A%0AQu%C3%A9%20necesito%3A%20%0AD%C3%B3nde%20(municipio%20o%20urbanizaci%C3%B3n)%3A%20%0ATel%C3%A9fono%3A%20")
