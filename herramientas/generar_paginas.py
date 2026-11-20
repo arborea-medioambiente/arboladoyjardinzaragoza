@@ -323,8 +323,7 @@ paginas = {
      ("Antes de podar, miramos el árbol", "<p>Muchos problemas no se ven a simple vista: grietas en la base, pudriciones dentro del tronco o heridas que sueltan resina. Revisamos el árbol y le decimos si basta con una poda o si conviene hacer algo más. Podar de más debilita el árbol, así que cortamos solo lo necesario.</p>"),
      ("Pinos y árboles protegidos", "<p>En algunos municipios hace falta permiso para podar o talar ciertos árboles. Si es su caso, lo tramitamos nosotros.</p>")],
     foto(r, "arbol-exudado", "Tronco con una herida que suelta resina", "Herida en el tronco que suelta resina.", 1097, 1200) +
-    foto(r, "arbol-grieta-base", "Grieta en la base del tronco de un árbol sobre césped", "Grieta en la base del tronco.", 1200, 675) +
-    foto(r, "arbol-tronco-partido", "Tronco partido por una pudrición interna", "Tronco partido por una pudrición que no se veía desde fuera.", 1200, 900),
+    foto(r, "arbol-grieta-base", "Grieta en la base del tronco de un árbol sobre césped", "Grieta en la base del tronco.", 1200, 675),
     [("¿Cuándo es mejor podar?", "La mayoría de árboles se podan mejor en invierno, con la savia parada. Las ramas peligrosas o secas se pueden quitar en cualquier época."),
      ("¿Un árbol inclinado es peligroso?", "No siempre. Depende de si la inclinación es antigua, de cómo está la base y de si el suelo se ha levantado. Lo mejor es que lo veamos."),
      ("¿Se llevan las ramas?", "Sí. Troceamos y retiramos todos los restos, o los dejamos triturados si los quiere para el jardín.")]),
@@ -336,8 +335,6 @@ paginas = {
     [("Tala controlada", "<p>Cuando no hay espacio para que el árbol caiga entero, lo desmontamos por trozos desde arriba y los bajamos con cuerdas. Así no se daña nada alrededor. Si hace falta cortar la calle o pedir permiso al ayuntamiento, nos ocupamos nosotros.</p>"),
      ("Destoconado", "<p>El tocón que queda después de una tala estorba, vuelve a echar brotes y puede levantar el suelo. Lo quitamos con una destoconadora, que lo tritura por debajo del nivel del suelo, y dejamos el hueco listo para plantar, poner césped o pavimentar.</p>"),
      ("Qué nos llevamos", "<p>Tronco, ramas, serrín y restos del tocón. Si quiere quedarse la leña, se la dejamos cortada.</p>")],
-    foto(r, "tala-pino-junto-a-viviendas", "Pino grande e inclinado junto a una calle con viviendas", "Pino inclinado junto a viviendas y coches aparcados.", 900, 1200) +
-    foto(r, "destoconado-jardin", "Tocón de un árbol talado en un parterre de jardín", "Tocón en un parterre, antes de quitarlo.", 675, 1200) +
     foto(r, "tocon-alcorque", "Tocón en un alcorque rodeado de baldosas", "Tocón en un alcorque de baldosas.", 675, 1200),
     [("¿Necesito permiso para talar un árbol?", "Depende del municipio, de la especie y de si el terreno es urbano o rústico. Se lo decimos al ver el árbol y, si hace falta, lo pedimos nosotros."),
      ("¿Qué pasa si no quito el tocón?", "Muchos árboles vuelven a brotar desde el tocón y las raíces, y con los años se pudre y atrae hongos e insectos."),
