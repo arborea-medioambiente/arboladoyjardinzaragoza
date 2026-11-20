@@ -474,3 +474,17 @@ a { color: var(--verde-700); }
   .cards-4, .galeria { grid-template-columns: 1fr; }
   .logo-text { font-size: 1.15rem; }
 }
+
+/* Cinco servicios: tres arriba y dos centrados debajo */
+.cards-5 { grid-template-columns: repeat(6, 1fr); }
+.cards-5 > * { grid-column: span 2; }
+.cards-5 > :nth-child(4) { grid-column: 2 / span 2; }
+@media (max-width: 980px) {
+  .cards-5 { grid-template-columns: repeat(4, 1fr); }
+  .cards-5 > :nth-child(4) { grid-column: span 2; }
+  .cards-5 > :nth-child(5) { grid-column: 2 / span 2; }
+}
+@media (max-width: 560px) {
+  .cards-5 { grid-template-columns: 1fr; }
+  .cards-5 > :nth-child(n) { grid-column: auto; }
+}

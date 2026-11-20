@@ -26,6 +26,7 @@ MAILTO = ("mailto:" + EMAIL + "?subject=Presupuesto%20de%20jardiner%C3%ADa&body=
 
 SERVICIOS = [
     ("mantenimiento-de-jardines", "Mantenimiento de jardines"),
+    ("riego-automatico", "Riego automático"),
     ("poda-de-arboles", "Poda y arboricultura"),
     ("tala-y-destoconado", "Tala y destoconado"),
     ("desbroce-y-prevencion-de-incendios", "Desbroce y prevención de incendios"),
@@ -166,7 +167,7 @@ def galeria(raiz, fotos):
 
 # ---------- Datos para buscadores y asistentes de IA (schema.org) ----------
 NEGOCIO_ID = DOM + "/#negocio"
-DESC_NEGOCIO = ("Empresa de jardinería y arbolado de Zaragoza: mantenimiento de jardines, poda de árboles, tala controlada, "
+DESC_NEGOCIO = ("Empresa de jardinería y arbolado de Zaragoza: mantenimiento de jardines, riego automático, poda de árboles, tala controlada, "
                 "destoconado y desbroce de parcelas y fincas en Zaragoza y los municipios de alrededor, desde los permisos "
                 "hasta la retirada de los restos.")
 DIRECCION_LD = {"@type": "PostalAddress", "streetAddress": "Calle Riglos 9", "postalCode": "50012",
@@ -191,7 +192,7 @@ NEGOCIO_LD = {
     "image": [DOM + "/img/compartir.jpg", DOM + "/img/fotos/siega-cesped-jardin.webp"],
     "contactPoint": {"@type": "ContactPoint", "telephone": TEL, "contactType": "customer service",
                      "availableLanguage": "es", "areaServed": "ES"},
-    "knowsAbout": ["Jardinería", "Mantenimiento de jardines", "Arboricultura", "Poda de árboles", "Poda en altura",
+    "knowsAbout": ["Jardinería", "Mantenimiento de jardines", "Riego automático", "Arboricultura", "Poda de árboles", "Poda en altura",
                    "Tala controlada", "Destoconado", "Desbroce de parcelas y fincas", "Prevención de incendios"],
     "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Servicios", "itemListElement": [
         {"@type": "Offer", "itemOffered": {"@type": "Service", "name": n, "url": f"{DOM}/servicios/{s}.html"}}
@@ -201,7 +202,7 @@ NEGOCIO_LD = {
 NEGOCIO_CORTO_LD = {k: NEGOCIO_LD[k] for k in ("@type", "@id", "name", "url", "telephone", "address")}
 
 FAQ_PORTADA = [
-    ("¿Qué trabajos hacen?", "Mantenimiento de jardines (siega, setos, riego y limpieza), poda de árboles, también en altura, tala controlada, destoconado y desbroce de parcelas y fincas. Al terminar nos llevamos los restos."),
+    ("¿Qué trabajos hacen?", "Mantenimiento de jardines (siega, setos y limpieza), instalación y reparación de riego automático, poda de árboles, también en altura, tala controlada, destoconado y desbroce de parcelas y fincas. Al terminar nos llevamos los restos."),
     ("¿En qué zona trabajan?", f"En Zaragoza capital y en los municipios y urbanizaciones de alrededor: {ZONA_TXT}, entre otros."),
     ("¿Se ocupan de los permisos?", "Sí. Si la poda, la tala o el desbroce necesitan permiso del ayuntamiento o de Medio Ambiente, lo tramitamos nosotros."),
     ("¿Atienden urgencias?", "Sí. Si un árbol o una rama pueden caer tras un temporal, avísenos: si es posible, vamos el mismo día."),
@@ -215,7 +216,7 @@ SCHEMA = ld({"@type": "WebSite", "@id": DOM + "/#web", "url": DOM + "/", "name":
 # ---------- Portada ----------
 def tarjeta(slug, titulo, texto, img, alt):
     return f"""<a class="card card-link" href="servicios/{slug}.html">
-            {imagen("", img, alt, "(max-width: 560px) 100vw, (max-width: 980px) 50vw, 280px", "card-img")}
+            {imagen("", img, alt, "(max-width: 560px) 100vw, (max-width: 980px) 50vw, 370px", "card-img")}
             <div class="card-body">
               <h3>{titulo}</h3>
               <p>{texto}</p>
@@ -224,13 +225,13 @@ def tarjeta(slug, titulo, texto, img, alt):
           </a>"""
 
 portada = cabecera("Jardinería, poda y tala en Zaragoza | " + MARCA,
-    "Mantenimiento de jardines, poda, tala, destoconado y desbroce de fincas en Zaragoza y alrededores. Nos ocupamos de todo, desde los permisos hasta la retirada de los restos.",
+    "Mantenimiento de jardines, riego, poda, tala, destoconado y desbroce de fincas en Zaragoza y alrededores. Nos ocupamos de todo, desde los permisos hasta la retirada de los restos.",
     "", "", SCHEMA) + f"""
   <section id="inicio" class="hero">
     <div class="container hero-inner">
       <div class="hero-text">
         <h1>Su jardín, sus árboles y su finca, en buenas manos</h1>
-        <p class="hero-sub">Jardinería, poda, tala y desbroce en Zaragoza y alrededores, para chalets, comunidades y fincas rústicas. Nos ocupamos de todo: desde pedir los permisos hasta llevarnos los restos.</p>
+        <p class="hero-sub">Jardinería, riego, poda, tala y desbroce en Zaragoza y alrededores, para chalets, comunidades y fincas rústicas. Nos ocupamos de todo: desde pedir los permisos hasta llevarnos los restos.</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="{WA}" target="_blank" rel="noopener">Pedir presupuesto por WhatsApp</a>
           <a class="btn btn-ghost" href="tel:{TEL}">Llamar: {TEL_TXT}</a>
@@ -251,11 +252,12 @@ portada = cabecera("Jardinería, poda y tala en Zaragoza | " + MARCA,
     <div class="container">
       <h2>Servicios</h2>
       <p class="section-sub">De forma periódica o para un trabajo puntual.</p>
-      <div class="cards cards-4">
+      <div class="cards cards-5">
           {tarjeta(SERVICIOS[0][0], SERVICIOS[0][1], "Siega, setos, riego y limpieza con visitas programadas. También plantación y reforma de zonas del jardín.", "jardin-chalet", "Jardín de un chalet con el césped cuidado, un seto alto y un parterre de flores junto a la casa")}
-          {tarjeta(SERVICIOS[1][0], SERVICIOS[1][1], "Poda de formación, de limpieza y en altura. Revisamos si el árbol tiene grietas, pudriciones o ramas con riesgo.", "poda-en-altura-cuerdas", "Rama con cortes de poda limpios, cuerdas de trepa y una motosierra de poda colgada")}
-          {tarjeta(SERVICIOS[2][0], SERVICIOS[2][1], "Tala controlada de árboles junto a casas, muros o cables, y retirada del tocón para recuperar el espacio.", "tala-tocon-motosierra", "Motosierra apoyada en el tocón de un árbol recién talado en un jardín")}
-          {tarjeta(SERVICIOS[3][0], SERVICIOS[3][1], "Desbroce de parcelas y fincas para cumplir la normativa y reducir el riesgo de incendio.", "desbroce-tractor", "Tractor con desbrozadora limpiando el matorral junto a unas encinas")}
+          {tarjeta(SERVICIOS[1][0], SERVICIOS[1][1], "Instalación y reparación de riego automático: aspersores, goteo, electroválvulas y programador.", "riego-arqueta-electrovalvulas", "Arqueta de riego abierta en el césped, con tres electroválvulas y sus llaves de paso")}
+          {tarjeta(SERVICIOS[2][0], SERVICIOS[2][1], "Poda de formación, de limpieza y en altura. Revisamos si el árbol tiene grietas, pudriciones o ramas con riesgo.", "poda-en-altura-cuerdas", "Rama con cortes de poda limpios, cuerdas de trepa y una motosierra de poda colgada")}
+          {tarjeta(SERVICIOS[3][0], SERVICIOS[3][1], "Tala controlada de árboles junto a casas, muros o cables, y retirada del tocón para recuperar el espacio.", "tala-tocon-motosierra", "Motosierra apoyada en el tocón de un árbol recién talado en un jardín")}
+          {tarjeta(SERVICIOS[4][0], SERVICIOS[4][1], "Desbroce de parcelas y fincas para cumplir la normativa y reducir el riesgo de incendio.", "desbroce-tractor", "Tractor con desbrozadora limpiando el matorral junto a unas encinas")}
       </div>
     </div>
   </section>
@@ -364,7 +366,7 @@ paginas = {
     "Mantenimiento de jardines de chalets y comunidades en Zaragoza: siega, setos, riego, limpieza y plantación, con visitas programadas o trabajos puntuales.",
     "Mantenimiento de jardines en Zaragoza",
     "Cuidamos el jardín de su chalet o de su comunidad con visitas programadas, para que usted no tenga que pensar en él.",
-    [("Qué incluye", "<ul class='lista-check'><li>Siega y perfilado del césped.</li><li>Recorte de setos y arbustos.</li><li>Poda ligera de árboles pequeños y frutales.</li><li>Revisión y ajuste del riego automático, y arreglo de goteros y aspersores.</li><li>Limpieza de hojas, malas hierbas y restos, que nos llevamos.</li></ul>"),
+    [("Qué incluye", "<ul class='lista-check'><li>Siega y perfilado del césped.</li><li>Recorte de setos y arbustos.</li><li>Poda ligera de árboles pequeños y frutales.</li><li>Revisión y ajuste del <a href='riego-automatico.html'>riego automático</a>, y arreglo de goteros y aspersores.</li><li>Limpieza de hojas, malas hierbas y restos, que nos llevamos.</li></ul>"),
      ("Visitas periódicas o trabajos sueltos", "<p>Puede contratar visitas cada semana, cada quince días o cada mes, según el tamaño del jardín y la época del año. También hacemos trabajos sueltos: una limpieza a fondo antes del verano, poner el jardín a punto antes de una celebración o cambiar una zona de césped por plantas que necesiten menos agua.</p>"),
      ("Plantación y reforma", "<p>Plantamos árboles, arbustos y césped nuevo, y rehacemos zonas del jardín pensando en el clima de Zaragoza: verano seco, cierzo y heladas. Le aconsejamos especies que aguanten bien y gasten poca agua.</p>")],
     [("jardin-chalet", "Jardín de un chalet con el césped cuidado, un seto alto y un parterre de flores junto a la casa", "Césped cuidado y parterre de flores."),
@@ -372,6 +374,20 @@ paginas = {
     [("¿Cada cuánto conviene la visita?", "En primavera y verano el césped crece rápido y suele hacer falta una visita cada una o dos semanas. En otoño e invierno basta con una al mes."),
      ("¿Se llevan los restos?", "Sí. Al terminar recogemos hojas, ramas y césped cortado y nos los llevamos."),
      ("¿Trabajan para comunidades de vecinos?", "Sí, tanto para chalets particulares como para zonas verdes de comunidades y urbanizaciones.")]),
+"riego-automatico": pagina_servicio("riego-automatico",
+    "Riego automático en Zaragoza: instalación y reparación",
+    "Instalación, reparación y puesta a punto de riego automático en jardines de Zaragoza: aspersores, goteo, electroválvulas y programadores. Arreglamos fugas y averías.",
+    "Riego automático en Zaragoza",
+    "Instalamos riego automático en jardines nuevos o ya hechos, y reparamos el que tiene: fugas, aspersores rotos, electroválvulas que no abren o programadores que fallan.",
+    [("Instalación", "<ul class='lista-check'><li>Aspersores y difusores para el césped.</li><li>Goteo para setos, arbustos, árboles y huerto.</li><li>Electroválvulas en arqueta y programador, para que cada zona reciba el agua que necesita.</li><li>En jardines ya hechos abrimos zanjas estrechas, metemos la tubería y volvemos a tapar.</li></ul>"),
+     ("Reparación y puesta a punto", "<p>Buscamos y arreglamos fugas, cambiamos aspersores, goteros y electroválvulas, y dejamos el programador ajustado. En primavera ponemos el riego en marcha y lo revisamos zona por zona; antes del invierno lo dejamos preparado para las heladas.</p>"),
+     ("Regar bien con menos agua", "<p>En Zaragoza el verano es seco y el cierzo se lleva buena parte del agua de los aspersores. Programamos el riego de noche o de madrugada, ponemos goteo donde se puede y ajustamos los tiempos según la época del año.</p>")],
+    [("riego-arqueta-electrovalvulas", "Arqueta de riego abierta en el césped, con tres electroválvulas y sus llaves de paso", "Arqueta con las electroválvulas."),
+     ("riego-zanja-tuberia", "Zanja en el césped con una tubería de riego de polietileno y una pieza de conexión", "Tubería nueva en zanja.")],
+    [("¿Se puede poner riego automático en un jardín ya hecho?", "Sí. Abrimos zanjas estrechas, metemos la tubería y volvemos a tapar. El césped se recupera en unas semanas."),
+     ("¿A qué hora conviene regar?", "De noche o de madrugada. Se evapora menos agua y suele haber menos viento, que con los aspersores se nota mucho."),
+     ("¿Qué hay que hacer con el riego en invierno?", "Con las heladas conviene cerrar el agua y vaciar la instalación, o al menos proteger las electroválvulas y el programador. Lo dejamos preparado en otoño y lo ponemos en marcha en primavera."),
+     ("¿Arreglan un riego que ha instalado otra empresa?", "Sí. Reparamos fugas, aspersores y electroválvulas aunque la instalación no sea nuestra.")]),
 "poda-de-arboles": pagina_servicio("poda-de-arboles",
     "Poda de árboles en Zaragoza",
     "Poda de árboles en Zaragoza: poda de formación, de limpieza y en altura, y revisión del estado del árbol (grietas, pudriciones y ramas con riesgo).",
@@ -499,6 +515,7 @@ BOTS_IA = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-Searc
 # ---------- llms.txt: resumen de la web en texto llano, para asistentes de IA ----------
 RESUMEN = {
     "mantenimiento-de-jardines": "siega, setos, riego, limpieza y plantación en chalets y comunidades, con visitas programadas o trabajos sueltos.",
+    "riego-automatico": "instalación, reparación y puesta a punto de riego automático: aspersores, goteo, electroválvulas y programadores.",
     "poda-de-arboles": "poda de formación, de limpieza, de seguridad y en altura, con revisión previa del estado del árbol.",
     "tala-y-destoconado": "tala controlada junto a casas, muros o cables, y retirada del tocón con destoconadora.",
     "desbroce-y-prevencion-de-incendios": "desbroce de parcelas, solares y fincas para cumplir la normativa y reducir el riesgo de incendio.",
