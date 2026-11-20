@@ -440,14 +440,12 @@ def legal(slug, titulo, cuerpo):
   </section>
 """ + pie("")
 
-TITULAR = "Jorge Lax López"
-NIF = PEND.format("NIF")
+TITULAR = MARCA
 (OUT / "aviso-legal.html").write_text(legal("aviso-legal", "Aviso legal", f"""
 <p>En cumplimiento de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico (LSSI), le informamos de quién está detrás de esta web.</p>
 <h2>Titular</h2>
 <ul>
 <li>Titular: {TITULAR}</li>
-<li>NIF: {NIF}</li>
 <li>Domicilio: {DIR}</li>
 <li>Teléfono: {TEL_TXT}</li>
 <li>Correo: <a href="mailto:{EMAIL}">{EMAIL}</a></li>
@@ -466,7 +464,7 @@ NIF = PEND.format("NIF")
 (OUT / "privacidad.html").write_text(legal("privacidad", "Política de privacidad", f"""
 <p>Esta política explica qué datos personales tratamos cuando nos contacta y qué derechos tiene, según el Reglamento General de Protección de Datos (RGPD) y la Ley Orgánica 3/2018.</p>
 <h2>Responsable</h2>
-<p>{TITULAR}, NIF {NIF}, {DIR}. Correo: <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
+<p>{TITULAR}, {DIR}. Correo: <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 <h2>Qué datos tratamos y para qué</h2>
 <p>Esta web no tiene formularios. Si nos llama, nos escribe por WhatsApp o nos manda un correo, usamos su nombre, teléfono, correo, dirección del trabajo y lo que nos cuente (incluidas fotos) solo para responderle, preparar el presupuesto y, si lo acepta, hacer el trabajo y facturarlo.</p>
 <h2>Base legal</h2>
