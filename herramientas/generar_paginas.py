@@ -143,20 +143,26 @@ def pie(raiz):
 </html>
 """
 
-def imagen(raiz, nombre, alt, tamanos, clase="", primera=False):
+def imagen(raiz, nombre, alt, tamanos, clase="", primera=False, arriba=False):
     """Foto en dos tamaños (600 px y la grande), para que el móvil baje la pequeña."""
     ancho, alto = MEDIDAS[nombre]
     base = f"{raiz}img/fotos/{nombre}"
-    carga = ' fetchpriority="high"' if primera else ' loading="lazy" decoding="async"'
+    # primera: la foto principal de la portada. arriba: fotos que se ven casi al abrir la página (no se retrasan).
+    carga = ' fetchpriority="high"' if primera else (' decoding="async"' if arriba else ' loading="lazy" decoding="async"')
     return (f'<img{f" class={chr(34)}{clase}{chr(34)}" if clase else ""} src="{base}.webp" '
             f'srcset="{base}-600.webp 600w, {base}.webp {ancho}w" sizes="{tamanos}" '
             f'alt="{html.escape(alt)}" width="{ancho}" height="{alto}"{carga}>')
 
-def foto(raiz, nombre, alt, pie_foto):
-    return f"""<figure class="foto">
-          <a href="{raiz}img/fotos/{nombre}.webp">{imagen(raiz, nombre, alt, "(max-width: 560px) 100vw, 360px")}</a>
+def galeria(raiz, fotos):
+    """Fotos de una página de servicio, como (nombre, texto alternativo, pie). Pocas: una, o dos como mucho."""
+    if not fotos:
+        return ""
+    tamanos = "(max-width: 800px) 100vw, 760px" if len(fotos) == 1 else "(max-width: 560px) 100vw, 380px"
+    figuras = "".join(f"""<figure class="foto">
+          <a href="{raiz}img/fotos/{n}.webp">{imagen(raiz, n, alt, tamanos, arriba=True)}</a>
           <figcaption>{pie_foto}</figcaption>
-        </figure>"""
+        </figure>""" for n, alt, pie_foto in fotos)
+    return f'<div class="galeria galeria-{len(fotos)}">{figuras}</div>'
 
 # ---------- Datos para buscadores y asistentes de IA (schema.org) ----------
 NEGOCIO_ID = DOM + "/#negocio"
@@ -230,7 +236,7 @@ portada = cabecera("Jardinería, poda y tala en Zaragoza | " + MARCA,
           <a class="btn btn-ghost" href="tel:{TEL}">Llamar: {TEL_TXT}</a>
         </div>
       </div>
-      {imagen("", "siega-cesped-jardin", "Siega del césped en un jardín con setos altos y un árbol de sombra", "(max-width: 900px) 100vw, 480px", "hero-image", primera=True)}
+      {imagen("", "siega-cesped-jardin", "Jardinero segando el césped de un jardín con setos altos y un árbol de sombra", "(max-width: 900px) 100vw, 480px", "hero-image", primera=True)}
     </div>
   </section>
 
@@ -246,9 +252,9 @@ portada = cabecera("Jardinería, poda y tala en Zaragoza | " + MARCA,
       <h2>Servicios</h2>
       <p class="section-sub">De forma periódica o para un trabajo puntual.</p>
       <div class="cards cards-4">
-          {tarjeta(SERVICIOS[0][0], SERVICIOS[0][1], "Siega, setos, riego y limpieza con visitas programadas. También plantación y reforma de zonas del jardín.", "jardin-chalet", "Jardín de un chalet con el césped recién segado, un seto alto recortado y cipreses al fondo")}
-          {tarjeta(SERVICIOS[1][0], SERVICIOS[1][1], "Poda de formación, de limpieza y en altura. Revisamos si el árbol tiene grietas, pudriciones o ramas con riesgo.", "corte-de-poda", "Corte de poda limpio en un plátano de sombra")}
-          {tarjeta(SERVICIOS[2][0], SERVICIOS[2][1], "Tala controlada de árboles junto a casas, muros o cables, y retirada del tocón para recuperar el espacio.", "motosierra-corte-tronco", "Motosierra cortando el tronco de un árbol")}
+          {tarjeta(SERVICIOS[0][0], SERVICIOS[0][1], "Siega, setos, riego y limpieza con visitas programadas. También plantación y reforma de zonas del jardín.", "jardin-chalet", "Jardín de un chalet con el césped cuidado, un seto alto y un parterre de flores junto a la casa")}
+          {tarjeta(SERVICIOS[1][0], SERVICIOS[1][1], "Poda de formación, de limpieza y en altura. Revisamos si el árbol tiene grietas, pudriciones o ramas con riesgo.", "poda-en-altura-cuerdas", "Rama con cortes de poda limpios, cuerdas de trepa y una motosierra de poda colgada")}
+          {tarjeta(SERVICIOS[2][0], SERVICIOS[2][1], "Tala controlada de árboles junto a casas, muros o cables, y retirada del tocón para recuperar el espacio.", "tala-tocon-motosierra", "Motosierra apoyada en el tocón de un árbol recién talado en un jardín")}
           {tarjeta(SERVICIOS[3][0], SERVICIOS[3][1], "Desbroce de parcelas y fincas para cumplir la normativa y reducir el riesgo de incendio.", "desbroce-tractor", "Tractor con desbrozadora limpiando el matorral junto a unas encinas")}
       </div>
     </div>
@@ -312,7 +318,7 @@ portada = cabecera("Jardinería, poda y tala en Zaragoza | " + MARCA,
 (OUT / "index.html").write_text(portada, encoding="utf-8")
 
 # ---------- Páginas de servicio ----------
-def pagina_servicio(slug, titulo_seo, desc, h1, intro, bloques, fotos_html, faq):
+def pagina_servicio(slug, titulo_seo, desc, h1, intro, bloques, fotos, faq):
     raiz = "../"
     url = f"{DOM}/servicios/{slug}.html"
     nombre = dict(SERVICIOS)[slug]
@@ -340,8 +346,8 @@ def pagina_servicio(slug, titulo_seo, desc, h1, intro, bloques, fotos_html, faq)
 
   <section class="section">
     <div class="container prosa">
+      {galeria(raiz, fotos)}
       {cuerpo}
-      {('<div class="galeria">' + fotos_html + '</div>') if fotos_html else ''}
       <h2>Preguntas frecuentes</h2>
       <div class="faq">{faq_html(faq)}</div>
       <h2>Otros servicios</h2>
@@ -361,8 +367,8 @@ paginas = {
     [("Qué incluye", "<ul class='lista-check'><li>Siega y perfilado del césped.</li><li>Recorte de setos y arbustos.</li><li>Poda ligera de árboles pequeños y frutales.</li><li>Revisión y ajuste del riego automático, y arreglo de goteros y aspersores.</li><li>Limpieza de hojas, malas hierbas y restos, que nos llevamos.</li></ul>"),
      ("Visitas periódicas o trabajos sueltos", "<p>Puede contratar visitas cada semana, cada quince días o cada mes, según el tamaño del jardín y la época del año. También hacemos trabajos sueltos: una limpieza a fondo antes del verano, poner el jardín a punto antes de una celebración o cambiar una zona de césped por plantas que necesiten menos agua.</p>"),
      ("Plantación y reforma", "<p>Plantamos árboles, arbustos y césped nuevo, y rehacemos zonas del jardín pensando en el clima de Zaragoza: verano seco, cierzo y heladas. Le aconsejamos especies que aguanten bien y gasten poca agua.</p>")],
-    foto(r, "siega-cesped-jardin", "Siega del césped en un jardín con setos altos y un árbol de sombra", "Siega del césped.") +
-    foto(r, "jardin-chalet", "Jardín de un chalet con el césped recién segado, un seto alto recortado y cipreses al fondo", "Césped segado y seto recortado."),
+    [("jardin-chalet", "Jardín de un chalet con el césped cuidado, un seto alto y un parterre de flores junto a la casa", "Césped cuidado y parterre de flores."),
+     ("restos-de-poda-saca", "Saca llena de ramas y restos de poda en un jardín", "Nos llevamos los restos.")],
     [("¿Cada cuánto conviene la visita?", "En primavera y verano el césped crece rápido y suele hacer falta una visita cada una o dos semanas. En otoño e invierno basta con una al mes."),
      ("¿Se llevan los restos?", "Sí. Al terminar recogemos hojas, ramas y césped cortado y nos los llevamos."),
      ("¿Trabajan para comunidades de vecinos?", "Sí, tanto para chalets particulares como para zonas verdes de comunidades y urbanizaciones.")]),
@@ -374,9 +380,7 @@ paginas = {
     [("Tipos de poda", "<ul class='lista-check'><li><strong>De formación</strong>, en árboles jóvenes, para que crezcan con una buena estructura.</li><li><strong>De limpieza</strong>: ramas secas, rotas o enfermas.</li><li><strong>De seguridad</strong>: ramas que tocan el tejado, la fachada o los cables, o que pueden caer.</li><li><strong>En altura</strong>, con técnica de trepa cuando no llega una plataforma.</li></ul>"),
      ("Antes de podar, miramos el árbol", "<p>Muchos problemas no se ven a simple vista: grietas en la base, pudriciones dentro del tronco o heridas que sueltan resina. Revisamos el árbol y le decimos si basta con una poda o si conviene hacer algo más. Podar de más debilita el árbol, así que cortamos solo lo necesario.</p>"),
      ("Pinos y árboles protegidos", "<p>En algunos municipios hace falta permiso para podar o talar ciertos árboles. Si es su caso, lo tramitamos nosotros.</p>")],
-    foto(r, "corte-de-poda", "Corte de poda limpio en un plátano de sombra", "Corte de poda limpio.") +
-    foto(r, "arbol-exudado", "Tronco con una herida que suelta resina", "Herida en el tronco que suelta resina.") +
-    foto(r, "arbol-grieta-base", "Grieta en la base del tronco de un árbol sobre césped", "Grieta en la base del tronco."),
+    [("poda-en-altura-cuerdas", "Rama con cortes de poda limpios, cuerdas de trepa y una motosierra de poda colgada", "Poda en altura, con cuerdas.")],
     [("¿Cuándo es mejor podar?", "La mayoría de árboles se podan mejor en invierno, con la savia parada. Las ramas peligrosas o secas se pueden quitar en cualquier época."),
      ("¿Un árbol inclinado es peligroso?", "No siempre. Depende de si la inclinación es antigua, de cómo está la base y de si el suelo se ha levantado. Lo mejor es que lo veamos."),
      ("¿Se llevan las ramas?", "Sí. Troceamos y retiramos todos los restos, o los dejamos triturados si los quiere para el jardín.")]),
@@ -388,8 +392,7 @@ paginas = {
     [("Tala controlada", "<p>Cuando no hay espacio para que el árbol caiga entero, lo desmontamos por trozos desde arriba y los bajamos con cuerdas. Así no se daña nada alrededor. Si hace falta cortar la calle o pedir permiso al ayuntamiento, nos ocupamos nosotros.</p>"),
      ("Destoconado", "<p>El tocón que queda después de una tala estorba, vuelve a echar brotes y puede levantar el suelo. Lo quitamos con una destoconadora, que lo tritura por debajo del nivel del suelo, y dejamos el hueco listo para plantar, poner césped o pavimentar.</p>"),
      ("Qué nos llevamos", "<p>Tronco, ramas, serrín y restos del tocón. Si quiere quedarse la leña, se la dejamos cortada.</p>")],
-    foto(r, "motosierra-corte-tronco", "Motosierra cortando el tronco de un árbol", "Corte del tronco con motosierra.") +
-    foto(r, "tocon-recien-cortado", "Tocón de un pino recién talado, con el corte limpio y serrín alrededor", "Tocón recién cortado, antes de destoconar."),
+    [("tala-tocon-motosierra", "Motosierra apoyada en el tocón de un árbol recién talado en un jardín", "Árbol talado: queda el tocón, que también quitamos.")],
     [("¿Necesito permiso para talar un árbol?", "Depende del municipio, de la especie y de si el terreno es urbano o rústico. Se lo decimos al ver el árbol y, si hace falta, lo pedimos nosotros."),
      ("¿Qué pasa si no quito el tocón?", "Muchos árboles vuelven a brotar desde el tocón y las raíces, y con los años se pudre y atrae hongos e insectos."),
      ("¿Se puede plantar en el mismo sitio?", "Sí. Después del destoconado rellenamos el hueco con tierra y ya se puede plantar.")]),
@@ -401,9 +404,7 @@ paginas = {
     [("Por qué desbrozar", "<p>La hierba seca y el matorral arden con mucha facilidad en verano. Muchos ayuntamientos obligan a tener las parcelas limpias y pueden multar si no lo están. En las urbanizaciones junto al monte, una franja limpia alrededor de las casas es la mejor protección frente a un incendio.</p>"),
      ("Qué hacemos", "<ul class='lista-check'><li>Desbroce de hierba y matorral, a mano o con la máquina que pida el terreno.</li><li>Poda de las ramas bajas de los árboles, para que el fuego no suba a las copas.</li><li>Franjas de protección alrededor de casas y vallas.</li><li>Retirada o triturado de todos los restos.</li></ul>"),
      ("Cuándo hacerlo", "<p>Lo mejor es desbrozar a finales de primavera, cuando la hierba ya ha crecido y antes de que se seque. En fincas grandes conviene repasar a finales de verano.</p>")],
-    foto(r, "desbroce-tractor", "Tractor con desbrozadora limpiando el matorral junto a unas encinas", "Desbroce con tractor y desbrozadora.") +
-    foto(r, "desbroce-pinar", "Pinar con el matorral desbrozado y los restos amontonados", "Pinar con el matorral desbrozado.") +
-    foto(r, "desbroce-restos", "Terreno desbrozado con restos de ramas", "Zona desbrozada, antes de retirar los restos."),
+    [("desbroce-tractor", "Tractor con desbrozadora limpiando el matorral junto a unas encinas", "Desbroce con tractor y desbrozadora.")],
     [("¿Me pueden multar si no desbrozo?", "Sí. Muchas ordenanzas municipales obligan a mantener limpios los solares y parcelas, sobre todo en verano."),
      ("¿Queman los restos?", "No. Los retiramos o los trituramos y los dejamos en el terreno, que protege el suelo."),
      ("¿Trabajan en fincas grandes?", "Sí. Díganos la superficie y le preparamos el presupuesto; en los bordes y junto a los árboles siempre se repasa a mano.")]),
